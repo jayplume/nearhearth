@@ -1,0 +1,14 @@
+{
+  "name": "NEAR Hearth",
+  "short_name": "Hearth",
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#16100d",
+  "background_color": "#16100d",
+  "display": "standalone"
+}

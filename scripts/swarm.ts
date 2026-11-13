@@ -38,7 +38,7 @@ const params = await hearth<{ round_secs: number }>("get_params");
 const roundMs = params.round_secs * 1000;
 let played = 0;
 
-while (played < maxRounds) {
+async function playRound() {
   let s = await hearth<ChainState>("get_state");
   const round = s.round;
   const startMs = s.round_ends_ms - roundMs;
@@ -88,5 +88,15 @@ while (played < maxRounds) {
   log({ round, event: "round_end", pledged: fmt(BigInt(s.pledged)), line: fmt(BigInt(s.line)), streak: s.streak });
   const left = s.round_ends_ms - Date.now() + 3_000;
   if (left > 0) await sleep(left);
-  played++;
+}
+
+while (played < maxRounds) {
+  try {
+    await playRound();
+    played++;
+  } catch (e) {
+    // One failed read or transaction must not stop the swarm: log it and pick up from the current round.
+    log({ event: "error", message: e instanceof Error ? e.message.slice(0, 200) : String(e) });
+    await sleep(15_000);
+  }
 }

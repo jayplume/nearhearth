@@ -6,6 +6,10 @@ export const HEARTH_CONTRACT = "fire.nearhearth.testnet";
 export const PARENT = "nearhearth.testnet";
 export const COUNCIL_DAO = "nearhearth-council.sputnikv2.testnet";
 export const RPC = "https://rpc.testnet.fastnear.com";
+/** Read-only fallbacks, tried in order when an RPC rate-limits or fails. */
+export const READ_RPCS = [RPC, "https://near-testnet.drpc.org", "https://archival-rpc.testnet.fastnear.com"];
+/** Where transactions go when the first RPC rate-limits. */
+export const WRITE_RPCS = [RPC, "https://near-testnet.drpc.org"];
 export const EXPLORER = "https://testnet.nearblocks.io";
 export const txUrl = (h: string) => `${EXPLORER}/txns/${h}`;
 export const accountUrl = (a: string) => `${EXPLORER}/address/${a}`;
@@ -46,6 +50,13 @@ export interface ChainRound {
   closed_block: number;
 }
 
+export interface ChainAccount {
+  account_id: string;
+  balance: string;
+  pledge: string;
+  warmth: string;
+}
+
 export interface ChainClaimable {
   round: number;
   pledged: string;
@@ -83,21 +94,36 @@ function b64(s: string): string {
   return typeof btoa === "function" ? btoa(s) : Buffer.from(s).toString("base64");
 }
 
-/** Calls a view method on any testnet contract. */
-export async function view<T>(contract: string, method: string, args: Record<string, unknown> = {}, rpc = RPC): Promise<T> {
-  const res = await fetch(rpc, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      jsonrpc: "2.0",
-      id: "nearhearth",
-      method: "query",
-      params: { request_type: "call_function", finality: "optimistic", account_id: contract, method_name: method, args_base64: b64(JSON.stringify(args)) },
-    }),
+let preferred = 0;
+
+/** Calls a view method on any testnet contract, moving to the next RPC when one rate-limits or fails. */
+export async function view<T>(contract: string, method: string, args: Record<string, unknown> = {}): Promise<T> {
+  const body = JSON.stringify({
+    jsonrpc: "2.0",
+    id: "nearhearth",
+    method: "query",
+    params: { request_type: "call_function", finality: "optimistic", account_id: contract, method_name: method, args_base64: b64(JSON.stringify(args)) },
   });
-  const body = await res.json();
-  if (body.error || body.result?.error) throw new Error(`${method}: ${JSON.stringify(body.error ?? body.result.error).slice(0, 200)}`);
-  return JSON.parse(new TextDecoder().decode(new Uint8Array(body.result.result))) as T;
+  let lastError: unknown;
+  for (let i = 0; i < READ_RPCS.length; i++) {
+    const idx = (preferred + i) % READ_RPCS.length;
+    try {
+      const res = await fetch(READ_RPCS[idx]!, { method: "POST", headers: { "Content-Type": "application/json" }, body });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const out = await res.json();
+      // An RPC-level error (rate limit, node trouble): try the next RPC.
+      if (out.error) throw new Error(`RPC ${READ_RPCS[idx]}: ${JSON.stringify(out.error).slice(0, 160)}`);
+      // The contract itself refused: that is the answer, from any RPC.
+      if (out.result?.error) throw new Error(`${method}: ${String(out.result.error).slice(0, 200)}`);
+      preferred = idx;
+      return JSON.parse(new TextDecoder().decode(new Uint8Array(out.result.result))) as T;
+    } catch (e) {
+      lastError = e;
+      // A contract panic is an answer, not an outage: do not retry it elsewhere.
+      if (e instanceof Error && e.message.startsWith(`${method}:`)) throw e;
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
 export const hearth = <T>(method: string, args: Record<string, unknown> = {}) => view<T>(HEARTH_CONTRACT, method, args);

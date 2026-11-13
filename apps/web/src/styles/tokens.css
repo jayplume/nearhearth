@@ -1,0 +1,43 @@
+/*
+ * NEAR Hearth palette: a hearth at night.
+ *   --soot     the room                 --ember  money going into the fire, roars
+ *   --bone     text                     --flame  sparks coming back
+ *   --ash      quiet text               --slate  a fire that went out (cold, refunds)
+ */
+:root {
+  color-scheme: dark;
+  --soot: #16100d;
+  --soot-2: #1f1611;
+  --card: #281c16;
+  --card-2: #31231b;
+  --rule: #3f2e24;
+  --bone: #f7eee5;
+  --ash: #c4b3a5;
+  --ash-2: #8d7a6c;
+  --ember: #ff7a1a;
+  --ember-soft: #4a2412;
+  --flame: #ffc04d;
+  --gold: #ffe2a3;
+  --slate: #8aa3b8;
+  --slate-soft: #22303b;
+  --bad: #ff6b5a;
+
+  --display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --sans: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --t-xs: 0.8125rem;
+  --t-sm: 0.9375rem;
+  --t-md: 1.0625rem;
+  --t-lg: 1.375rem;
+  --t-xl: 1.875rem;
+  --t-2xl: 2.625rem;
+  --t-hero: clamp(2.6rem, 1.5rem + 4.6vw, 5.2rem);
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 24px;
+  --wrap: 1180px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -181,6 +181,8 @@ fn views_report_what_is_claimable() {
     let c = h.get_claimable(acct("a.testnet"));
     assert_eq!((c[0].status.as_str(), c[0].amount.0), ("roared", e(1_500)));
     assert_eq!(h.list_rounds(None, None).len(), 1);
+    let v = h.get_accounts(vec![acct("a.testnet"), acct("nobody.testnet")], 0);
+    assert_eq!((v[0].pledge.0, v[1].balance.0), (e(1_000), 0));
     assert!(get_logs().iter().any(|l| l.contains(r#""event":"round_closed""#)));
 }
 
@@ -234,6 +236,7 @@ fn drip_registers_once_and_refunds_extra_deposit() {
     at("new.testnet", 1_000, NearToken::from_millinear(50));
     assert_eq!(h.drip().0, e(100));
     assert_eq!(bal(&h, "new.testnet"), e(100));
+    assert!(h.has_dripped(acct("new.testnet")));
     assert_eq!(h.get_state().drip_left.0, e(100_000) - e(100));
     assert_eq!(h.get_state().treasury.0, TREASURY_SHARE - e(100));
 }

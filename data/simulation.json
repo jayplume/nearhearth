@@ -675,7 +675,7 @@
     "treasuryChangePct": -2
    },
    "title": "A coordinated swarm",
-   "description": "6 steady keepers, 2 skeptics, 3 closers and a guardian. Closers fill the exact gap late in each round."
+   "description": "6 steady keepers, 2 skeptics, 3 closers and a guardian. Late in each round the closers fill the gap, each up to a quarter of the line."
   },
   {
    "scenario": "no-closers",

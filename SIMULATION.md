@@ -13,7 +13,7 @@ Line at streak 0: 1,000 EMBER, rising 10% per streak level to 3×. Spark pool: 1
 
 ## A coordinated swarm
 
-6 steady keepers, 2 skeptics, 3 closers and a guardian. Closers fill the exact gap late in each round.
+6 steady keepers, 2 skeptics, 3 closers and a guardian. Late in each round the closers fill the gap, each up to a quarter of the line.
 
 | Round | Line | Pledged | Outcome | Streak | Supply | Treasury |
 |---|---|---|---|---|---|---|

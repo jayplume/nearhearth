@@ -121,7 +121,7 @@ export const SCENARIOS: Scenario[] = [
   {
     id: "swarm",
     title: "A coordinated swarm",
-    description: "6 steady keepers, 2 skeptics, 3 closers and a guardian. Closers fill the exact gap late in each round.",
+    description: "6 steady keepers, 2 skeptics, 3 closers and a guardian. Late in each round the closers fill the gap, each up to a quarter of the line.",
     keepers: [...many(6, "steady", "steady"), ...many(2, "skeptic", "skeptic"), ...many(3, "closer", "closer"), k("guardian-1", "guardian", 20_000)],
     presence: () => 0.9,
   },

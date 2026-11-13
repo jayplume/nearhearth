@@ -6,7 +6,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { RPC } from "@nearhearth/hearth";
+import { WRITE_RPCS } from "@nearhearth/hearth";
 import { Account, KeyPair, actions } from "near-api-js";
 
 const keychain = () => join(process.env.NEAR_CREDENTIALS_DIR ?? join(homedir(), ".near-credentials"), "testnet");
@@ -36,7 +36,23 @@ export interface Call {
   gas?: string;
 }
 
-const account = (id: string) => new Account(id, RPC, loadKey(id) as any);
+const rpcs = () => (process.env.NEAR_RPC ? [process.env.NEAR_RPC, ...WRITE_RPCS] : WRITE_RPCS);
+const account = (id: string, rpc: string) => new Account(id, rpc, loadKey(id) as any);
+
+/** Sends through the first RPC that does not rate-limit. A 429 means the transaction was not accepted, so retrying is safe. */
+async function sendVia(signer: string, tx: Record<string, unknown>): Promise<any> {
+  let last: unknown;
+  for (const rpc of rpcs()) {
+    try {
+      return await account(signer, rpc).signAndSendTransaction(tx as any);
+    } catch (e) {
+      last = e;
+      const limited = /429|rate|Too Many/i.test(String((e as any)?.cause ?? "") + String(e));
+      if (!limited) throw e;
+    }
+  }
+  throw last;
+}
 
 function outcome(res: any): Sent {
   const hash = res?.transaction?.hash ?? res?.transaction_outcome?.id ?? "?";
@@ -56,14 +72,14 @@ function outcome(res: any): Sent {
 
 /** One transaction with one or more function calls to `contractId`. */
 export async function callMany(signer: string, contractId: string, calls: Call[]): Promise<Sent> {
-  const res = await account(signer).signAndSendTransaction({
+  const res = await sendVia(signer, {
     receiverId: contractId,
     actions: calls.map((c) =>
       actions.functionCall(c.method, new TextEncoder().encode(JSON.stringify(c.args)), BigInt(c.gas ?? "30000000000000"), BigInt(c.deposit ?? "0")),
     ),
     waitUntil: "EXECUTED_OPTIMISTIC",
     throwOnFailure: false,
-  } as any);
+  });
   return outcome(res);
 }
 
@@ -77,11 +93,11 @@ export async function createSubAccount(parent: string, sub: string, yoctoNear: b
   if (!existsSync(path)) {
     writeFileSync(path, JSON.stringify({ account_id: sub, public_key: key.getPublicKey().toString(), private_key: key.toString() }), { mode: 0o600 });
   }
-  const res = await account(parent).signAndSendTransaction({
+  const res = await sendVia(parent, {
     receiverId: sub,
     actions: [actions.createAccount(), actions.transfer(yoctoNear), actions.addFullAccessKey(key.getPublicKey())],
     waitUntil: "EXECUTED_OPTIMISTIC",
     throwOnFailure: false,
-  } as any);
+  });
   return outcome(res);
 }

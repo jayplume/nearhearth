@@ -104,6 +104,14 @@ pub struct HearthState {
 }
 
 #[near(serializers = [json])]
+pub struct AccountView {
+    pub account_id: AccountId,
+    pub balance: U128,
+    pub pledge: U128,
+    pub warmth: U128,
+}
+
+#[near(serializers = [json])]
 pub struct Claimable {
     pub round: u64,
     pub pledged: U128,
@@ -387,6 +395,24 @@ impl Hearth {
                 }
             })
             .collect()
+    }
+
+    /// Balance, pledge in `round` and warmth for many accounts in one call (the site reads the whole swarm with it).
+    pub fn get_accounts(&self, account_ids: Vec<AccountId>, round: u64) -> Vec<AccountView> {
+        require!(account_ids.len() <= 50, "at most 50 accounts per call");
+        account_ids
+            .into_iter()
+            .map(|a| AccountView {
+                balance: U128(self.token.accounts.get(&a).unwrap_or(0)),
+                pledge: U128(self.pledges.get(&format!("{round}:{a}")).copied().unwrap_or(0)),
+                warmth: U128(self.warmth.get(&a).copied().unwrap_or(0)),
+                account_id: a,
+            })
+            .collect()
+    }
+
+    pub fn has_dripped(&self, account_id: AccountId) -> bool {
+        self.dripped.contains(&account_id)
     }
 
     pub fn get_warmth(&self, account_id: AccountId) -> U128 {

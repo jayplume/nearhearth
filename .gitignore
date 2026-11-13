@@ -5,3 +5,4 @@ dist
 .env.local
 contract/target
 *.log
+data/swarm-run.log

@@ -1,0 +1,33 @@
+{
+  "name": "nearhearth",
+  "private": true,
+  "version": "0.1.0",
+  "description": "NEAR Hearth: a memecoin you keep alive together. EMBER holders and a swarm of keeper agents pledge to keep a fire lit on NEAR.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.2.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "simulate": "tsx scripts/simulate.ts",
+    "swarm": "tsx scripts/swarm.ts",
+    "status": "tsx scripts/status.ts",
+    "council": "tsx scripts/council.ts",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "biome lint .",
+    "dev": "pnpm --filter web dev"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"],
+    "ignoredBuiltDependencies": ["@biomejs/biome", "secp256k1"]
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "24.9.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "near-api-js": "7.3.1",
+    "@nearhearth/hearth": "workspace:*"
+  }
+}

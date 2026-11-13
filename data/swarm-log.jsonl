@@ -32,3 +32,16 @@
 {"at":"2026-11-13T23:16:21.431Z","round":2,"keeper":"keeper-12.nearhearth.testnet","strategy":"freerider","event":"pass","reason":"Hopes the others keep the fire going. Sparks only go to pledgers, so it gets nothing."}
 {"at":"2026-11-13T23:16:21.790Z","round":2,"keeper":"keeper-06.nearhearth.testnet","strategy":"skeptic","event":"pass","reason":"Only 50% of the line is pledged; waits for 60%."}
 {"at":"2026-11-13T23:16:22.161Z","round":2,"keeper":"keeper-07.nearhearth.testnet","strategy":"skeptic","event":"pass","reason":"Only 50% of the line is pledged; waits for 60%."}
+{"at":"2026-11-13T23:19:04.503Z","round":2,"keeper":"keeper-09.nearhearth.testnet","strategy":"closer","event":"pledge","amount":"275","reason":"The gap is 550 EMBER; it covers a quarter of the line and leaves the rest to the next closer.","ok":"ok","tx":"https://testnet.nearblocks.io/txns/DLbpja11uArhcqujKBRrUj71Wnb1KV4uEc4uiffWXaXN"}
+{"at":"2026-11-13T23:19:07.129Z","round":2,"keeper":"keeper-08.nearhearth.testnet","strategy":"closer","event":"pledge","amount":"275","reason":"Fills the last 275 EMBER so the fire roars exactly at the line.","ok":"ok","tx":"https://testnet.nearblocks.io/txns/2j99GodgDd9h8dkitCwkbEFW9hchVk4F7T3kUrS8iTRV"}
+{"at":"2026-11-13T23:19:08.669Z","round":2,"keeper":"keeper-10.nearhearth.testnet","strategy":"closer","event":"pass","reason":"The line is already reached; adding more would only dilute the sparks."}
+{"at":"2026-11-13T23:19:45.504Z","round":2,"keeper":"keeper-11.nearhearth.testnet","strategy":"guardian","event":"pass","reason":"Nothing to protect: the fire will roar."}
+{"at":"2026-11-13T23:19:45.715Z","round":2,"event":"round_end","pledged":"1,100","line":"1,100","streak":1}
+{"at":"2026-11-13T23:20:31.860Z","round":3,"event":"close_rounds","ok":true,"tx":"https://testnet.nearblocks.io/txns/Hb5urfHp27JyDsCqLkZ32X52MCkrozXui5b29kKJw7Vj"}
+{"at":"2026-11-13T23:20:34.545Z","round":3,"keeper":"keeper-01.nearhearth.testnet","event":"claim_all","got":"165","tx":"https://testnet.nearblocks.io/txns/HKkFdU78F6wBaFrBW88fFN7yzn9hU5xzSJXUqGT3QnVJ"}
+{"at":"2026-11-13T23:20:36.711Z","round":3,"keeper":"keeper-02.nearhearth.testnet","event":"claim_all","got":"165","tx":"https://testnet.nearblocks.io/txns/BZgftm2gKU3yoRXc6KuVUhGY8VA5Pevk6yCmgBNgzs3C"}
+{"at":"2026-11-13T23:20:39.390Z","round":3,"keeper":"keeper-03.nearhearth.testnet","event":"claim_all","got":"165","tx":"https://testnet.nearblocks.io/txns/8UJe2KC1qzw6LfdXiZvNLmJnjnaBYu4a9XcTCcS5EHAm"}
+{"at":"2026-11-13T23:20:41.819Z","round":3,"keeper":"keeper-04.nearhearth.testnet","event":"claim_all","got":"165","tx":"https://testnet.nearblocks.io/txns/HZkPzU4W6sx67WEsjxuGQoFB612iXGbpDGCdz7H4iJnR"}
+{"at":"2026-11-13T23:20:44.627Z","round":3,"keeper":"keeper-05.nearhearth.testnet","event":"claim_all","got":"165","tx":"https://testnet.nearblocks.io/txns/FN87HXrrkiwEu65nCUvBtVadHg3B6gbKaqYEbmWhdZVa"}
+{"at":"2026-11-13T23:20:47.648Z","round":3,"keeper":"keeper-08.nearhearth.testnet","event":"claim_all","got":"412","tx":"https://testnet.nearblocks.io/txns/DFXeNLMraUbkra1dpJZys1UnHnNhSL35DQg6osNiL6QD"}
+{"at":"2026-11-13T23:20:50.196Z","round":3,"keeper":"keeper-09.nearhearth.testnet","event":"claim_all","got":"412","tx":"https://testnet.nearblocks.io/txns/GgVeNBRjn6cXKNX2kgSxG39srBLYjVLFGe65GTtwDQBu"}

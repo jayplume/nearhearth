@@ -1,4 +1,5 @@
 import { STRATEGIES, accountUrl } from "@nearhearth/hearth";
+import { useState } from "react";
 import { em, short } from "../lib/format";
 import type { Snapshot } from "../lib/live";
 
@@ -11,8 +12,21 @@ export function Keepers({ snap, compact = false }: { snap: Snapshot; compact?: b
   const s = snap.state;
   const roundMs = snap.params.round_secs * 1000;
   const elapsed = 1 - Math.max(0, s.round_ends_ms - Date.now()) / roundMs;
-  const rows = compact ? snap.keepers.slice(0, 6) : snap.keepers;
+  const [only, setOnly] = useState<string>("all");
+  const kinds = ["all", ...new Set(snap.keepers.map((k) => k.strategy))];
+  const visible = only === "all" ? snap.keepers : snap.keepers.filter((k) => k.strategy === only);
+  const rows = compact ? visible.slice(0, 6) : visible;
   return (
+    <>
+      {!compact && (
+        <div className="roster-tools" role="group" aria-label="Show keepers by strategy">
+          {kinds.map((k) => (
+            <button key={k} type="button" className={`chip-btn${only === k ? " is-on" : ""}`} aria-pressed={only === k} onClick={() => setOnly(k)}>
+              {k === "all" ? `All ${snap.keepers.length}` : `${STRATEGIES[k as keyof typeof STRATEGIES].name} (${snap.keepers.filter((x) => x.strategy === k).length})`}
+            </button>
+          ))}
+        </div>
+      )}
     <ol className="roster">
       {rows.map((k) => {
         const st = STRATEGIES[k.strategy];
@@ -53,5 +67,6 @@ export function Keepers({ snap, compact = false }: { snap: Snapshot; compact?: b
         );
       })}
     </ol>
+    </>
   );
 }

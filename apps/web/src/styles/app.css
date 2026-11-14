@@ -848,6 +848,19 @@ code {
 }
 
 /* ---------- keepers ---------- */
+.roster-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 16px;
+}
+
+.chip-btn.is-on {
+  color: #1b0d05;
+  background: var(--flame);
+  border-color: var(--flame);
+}
+
 .roster {
   list-style: none;
   padding: 0;

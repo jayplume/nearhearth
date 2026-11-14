@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 · 14 Nov 2026
+
+Moved to github.com/jayplume/nearhearth, public. About seventy focused changes:
+
+- **Engine**: `validateParams` (the contract's launch checks), `outcomeOf` and `previewPledge`, a `matcher` strategy, a "matchers instead of closers" scenario, burned and minted totals in the simulation, RPC backoff, `allRounds` paging. 20 tests.
+- **Contract**: `get_line_for` view, clippy-clean, tests for the batch-read cap, warmth listing and drip exhaustion (18 tests); upgraded on testnet without re-init.
+- **Scripts**: shared flag parser, `swarm --dry-run` and per-round summaries, `council --dry-run`, the council no longer re-proposes sitting members, `status --json`, `pnpm health` (renamed from `doctor`, which pnpm reserves), scripts are type-checked.
+- **Site**: pledge preview and validation, all-in chip, dismissable toasts, strategy colours, roster filter and sort, accessible simulation slider and legend, council proposal names and member warmth, line-schedule bars and anchors on the rules page, a not-found page, a loading skeleton, a live indicator, progress in the tab title, page fades, an error boundary, code-split pages, the build commit in the footer, a share button; the fire pauses when hidden and is lighter on phones.
+- **Hosting and repo**: security headers, robots and sitemap, per-page descriptions; badges, contributing guide, issue and PR templates, editorconfig, gitattributes, Dependabot, clippy and a Rust cache in CI, `pnpm check`.
+- **Docs**: ARCHITECTURE, STRATEGIES, GLOSSARY, a contract README and a FAQ.
+- **Tests**: React Testing Library tests of the keeper roster, the council and the rules page. 30 TypeScript tests in all.
+
 ## 0.2.0 · 14 Nov 2026
 
 From an audit as a judge would run it: clean clone, CI, the live site, the contract's balance.

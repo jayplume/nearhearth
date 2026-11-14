@@ -1,7 +1,7 @@
 /**
  * Health check for a running hearth: RPCs, the contract's storage headroom,
  * the keepers' NEAR for gas and EMBER to play, and the council's balance.
- * Exits 1 if anything needs attention.   pnpm doctor
+ * Exits 1 if anything needs attention.   pnpm health  (not "doctor": pnpm has its own)
  */
 import { COUNCIL_DAO, HEARTH_CONTRACT, KEEPERS, READ_RPCS, fmt, hearth, view } from "@nearhearth/hearth";
 

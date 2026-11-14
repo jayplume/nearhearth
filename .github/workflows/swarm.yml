@@ -1,0 +1,54 @@
+name: Keeper swarm
+
+# Plays two rounds with the keeper swarm every 8 hours, then tops up the
+# contract's storage if it runs low, so the fire is not only alive while a
+# maintainer's laptop is on. Needs the repository secret NEAR_KEYS: a JSON map
+# of the 12 keeper accounts (and nearhearth-fund.testnet for top-ups) to their
+# testnet keys. Without it the job does nothing.
+on:
+  schedule:
+    - cron: "17 */8 * * *"
+  workflow_dispatch:
+    inputs:
+      rounds:
+        description: Rounds to play
+        default: "2"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swarm
+  cancel-in-progress: false
+
+jobs:
+  play:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      HAS_KEY: ${{ secrets.NEAR_KEYS != '' }}
+    steps:
+      - name: Keeper keys present?
+        if: env.HAS_KEY != 'true'
+        run: echo "NEAR_KEYS secret is not set; skipping the swarm." && exit 0
+      - uses: actions/checkout@v4
+        if: env.HAS_KEY == 'true'
+      - uses: pnpm/action-setup@v4
+        if: env.HAS_KEY == 'true'
+      - uses: actions/setup-node@v4
+        if: env.HAS_KEY == 'true'
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: env.HAS_KEY == 'true'
+      - name: Play
+        if: env.HAS_KEY == 'true'
+        env:
+          NEAR_KEYS: ${{ secrets.NEAR_KEYS }}
+        run: pnpm swarm --rounds "${{ github.event.inputs.rounds || '2' }}"
+      - name: Top up storage
+        if: env.HAS_KEY == 'true'
+        env:
+          NEAR_KEYS: ${{ secrets.NEAR_KEYS }}
+        run: pnpm tsx scripts/top-up.ts --min 1 --amount 1

@@ -609,6 +609,140 @@ code {
   color: var(--ash-2);
 }
 
+.streakline {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  margin: 18px 0 0;
+  padding: 0;
+}
+
+.streakline li {
+  width: 14px;
+  height: 20px;
+  animation: pop 0.5s var(--ease) both;
+}
+
+.streakline-roared {
+  background: linear-gradient(to top, var(--ember), var(--flame));
+  clip-path: path("M7 0C8 4 14 7 14 13A7 7 0 0 1 0 13C0 9 3 7 4 5C4 8 5 9 6 10 5 6 6 3 7 0Z");
+}
+
+.streakline-out {
+  align-self: flex-end;
+  height: 6px !important;
+  border-radius: 3px;
+  background: var(--slate);
+  opacity: 0.7;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.6);
+  }
+}
+
+/* ---------- for NEAR ---------- */
+.value-block {
+  margin-top: clamp(48px, 7vw, 88px);
+}
+
+.value-figs {
+  margin: 20px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.value-figs div {
+  padding: 18px 18px 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.value-figs dt {
+  font-size: var(--t-xs);
+  color: var(--ash-2);
+}
+
+.value-figs dd {
+  margin: 2px 0 4px;
+  font-family: var(--display);
+  font-size: var(--t-2xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--flame);
+}
+
+.value-figs span {
+  display: block;
+  font-size: var(--t-xs);
+  color: var(--ash);
+  max-width: 28ch;
+}
+
+.value-flow {
+  margin: 20px 0 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 14px;
+  max-width: 78ch;
+}
+
+.value-flow li {
+  color: var(--ash);
+}
+
+.value-flow b {
+  color: var(--bone);
+}
+
+.model {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-sm);
+  margin-top: 20px;
+}
+
+.model th,
+.model td {
+  text-align: left;
+  vertical-align: top;
+  padding: 14px 16px 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.model thead th {
+  color: var(--ash-2);
+  font-weight: 500;
+  font-size: var(--t-xs);
+}
+
+.model tbody th {
+  width: 28%;
+}
+
+.model td {
+  color: var(--ash);
+}
+
+.status {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: var(--ash);
+  background: var(--card-2);
+}
+
+.status--live {
+  color: var(--flame);
+  background: var(--ember-soft);
+}
+
 /* ---------- endings ---------- */
 .endings {
   list-style: none;
@@ -1232,8 +1366,13 @@ code {
     padding: 20px 48px 0 20px;
   }
 
-  .supply-figs {
+  .supply-figs,
+  .value-figs {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .model tbody th {
+    width: auto;
   }
 
   .keeper {

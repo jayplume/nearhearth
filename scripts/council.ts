@@ -27,9 +27,23 @@ async function propose(description: string, kind: unknown): Promise<number> {
   return s.value as number;
 }
 
+/** Council members who can vote from this machine: the two founders, then any keeper the council has admitted. */
+async function voters(): Promise<string[]> {
+  const policy = await view<{ roles: { name: string; kind: { Group?: string[] } | string }[] }>(COUNCIL_DAO, "get_policy");
+  const council = policy.roles.find((r) => r.name === "council");
+  const members = typeof council?.kind === "object" ? (council.kind.Group ?? []) : [];
+  return [VOTER, PROPOSER, ...members.filter((m) => m !== VOTER && m !== PROPOSER)];
+}
+
+/** Votes until the DAO's threshold is met: as the council grows, one approval stops being enough. */
 async function approve(id: number, kind: unknown) {
-  const s = await call(VOTER, COUNCIL_DAO, "act_proposal", { id, action: "VoteApprove", proposal: kind }, "0", "300000000000000");
-  console.log(`voted approve on #${id}: ${s.ok ? "executed" : s.failure}\n  ${txUrl(s.hash)}`);
+  for (const v of await voters()) {
+    const p = await view<{ status: string; votes: Record<string, string> }>(COUNCIL_DAO, "get_proposal", { id });
+    if (p.status !== "InProgress") break;
+    if (p.votes[v]) continue;
+    const s = await call(v, COUNCIL_DAO, "act_proposal", { id, action: "VoteApprove", proposal: kind }, "0", "300000000000000");
+    console.log(`${v} approves #${id}: ${s.ok ? "ok" : s.failure}\n  ${txUrl(s.hash)}`);
+  }
   const p = await view<{ status: string }>(COUNCIL_DAO, "get_proposal", { id });
   console.log(`  status: ${p.status}`);
 }

@@ -30,6 +30,7 @@ We checked NEAR Hearth against each track prompt it fits (from `nearai/near-hack
 |---|---|---|
 | Use an existing Sputnik DAO or Trezu treasury; don't write a multisig | ✅ | Stock Sputnik DAO v2 from `sputnikv2.testnet` |
 | Reputation tied to named accounts, every point traceable | ✅ | Warmth: credited per claim with an event, only from roaring rounds |
+| Reputation-based access | ✅ | Proposals #1–#3 seated the three warmest keepers on the council, so warmth now carries votes |
 | Tiered approvals (auto for small, one member for mid, full vote for large) | ◐ | All payouts are normal DAO proposals; tiers are not implemented. Sputnik's role-based vote policy per proposal kind could express them. |
 | A public board of payouts and records | ✅ | Council page: proposals, statuses, warmth leaderboard |
 
@@ -47,15 +48,16 @@ We checked NEAR Hearth against each track prompt it fits (from `nearai/near-hack
 
 | Dimension | Evidence |
 |---|---|
-| Technical implementation | One contract with no owner; exact 256-bit payouts; lazy claims so closing is O(1) in pledgers; a TypeScript engine that matches the contract to the last unit (shared vector); 13 contract tests and 10 TypeScript tests; CI that also checks the simulation is reproducible; a swarm that runs live on testnet and survives RPC rate limits |
+| Technical implementation | One contract with no owner; exact 256-bit payouts; lazy claims so closing is O(1) in pledgers; a TypeScript engine that matches the contract to the last unit (shared vector); 14 contract tests and 13 TypeScript tests; CI that also checks the simulation is reproducible; a swarm that runs live on testnet and survives RPC rate limits |
 | Design | A live canvas fire whose size is the round's progress, cursor-fanned embers and a spark burst when a round roars; a deliberate night-hearth palette; reduced-motion fallback; mobile layout |
 | Impact | Gives a NEAR memecoin a reason to come back every round, and gives a DAO a reputation to pay by. Problem data: NEAR's memecoin launchpad fees fell from $8,807/month to under $2 |
 | Originality | A memecoin whose supply records how well its community coordinated (an assurance game), played by humans and agents side by side |
-| Sustainability | No server to run (static site, public RPCs); the contract needs no operator; the council treasury funds keepers and contributors; a launchpad could offer the hearth as a launch option |
+| Sustainability | No server to run (static site, public RPCs); the contract needs no operator; the swarm runs from a scheduled GitHub Action; the contract's storage is topped up by script; the council treasury funds keepers and contributors; a launchpad could offer the hearth for a launch fee (For NEAR page) |
+| Market value for NEAR | Recurring daily accounts, gas burned and shared with the contract, NEAR locked for storage, and a real job for a Sputnik DAO and for agents on NEAR (For NEAR page, with live figures) |
 
 ## Known gaps, in one place
 
 - The contract account's deploy key (SECURITY.md).
 - No NEAR Intents settlement, no sealed bids, no NEP-245, no social login (above).
-- Storage for pledge records is paid by the contract; a mainnet version would charge the pledger.
+- Storage is paid by the contract (about 300 bytes per closed round, 0.003 NEAR). On 10-minute testnet rounds that needed a top-up script; a daily mainnet hearth would use about 1 NEAR a year.
 - Testnet only.

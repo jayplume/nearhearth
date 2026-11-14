@@ -13,6 +13,7 @@ Everything here runs against NEAR **testnet** with test tokens. No step needs a 
 | On **Keepers**, switch the simulation tabs and move across the chart | Supply over 60 rounds for each community, an outcome strip (orange = roared, slate = out), and a readout for any round. |
 | Open **Council** | Council balance and members, the DAO's proposals with their status, and the warmth leaderboard. |
 | Open **Rules** | The launch parameters, read live from `get_params`. |
+| Open **For NEAR** | Live counts of closed rounds, pledges, accounts with warmth and EMBER burned, plus the value flow and business model. |
 
 ## 2. With a testnet wallet (5 minutes)
 
@@ -31,10 +32,10 @@ You need a NEAR testnet account (Meteor, Intear, HERE or Sender; a new one can b
 ```bash
 git clone https://github.com/Nailer/nearhearth && cd nearhearth
 pnpm install
-pnpm test          # 10 tests: the line, roar/out/cold, claims never exceed the pool, sybil split, strategies, simulation determinism, shared vector
+pnpm test          # 13 tests (10 engine + 3 site): the line, roar/out/cold, claims never exceed the pool, sybil split, strategies, simulation determinism, shared vector
 pnpm simulate      # regenerates SIMULATION.md byte for byte
 pnpm status        # the fire, read from NEAR
-cd contract && cargo test   # 13 tests, including agrees_with_the_typescript_rules_engine
+cd contract && cargo test   # 14 tests, including agrees_with_the_typescript_rules_engine
 ```
 
 The shared vector is the strongest check: `packages/hearth/test/rules.test.ts` writes five rounds of pledges and the exact outcomes, burns, claims and treasury the TypeScript engine computes (`contract/tests/vector.json`). The contract test replays the same pledges against the contract and must reach the same numbers to the last unit (10⁻¹⁸ EMBER).

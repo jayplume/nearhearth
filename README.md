@@ -13,6 +13,7 @@
   <a href="SIMULATION.md">SIMULATION.md</a> ·
   <a href="https://testnet.nearblocks.io/address/fire.nearhearth.testnet">Contract</a> ·
   <a href="https://testnet.nearblocks.io/address/nearhearth-council.sputnikv2.testnet">Council DAO</a> ·
+  <a href="https://nearhearth.vercel.app/for-near">For NEAR</a> ·
   <a href="docs/TESTING.md">Testing guide</a>
 </p>
 
@@ -50,10 +51,11 @@ Everything is in one contract with **no owner and no admin method**: the paramet
 | Wait, or scroll to **Every round, on chain** | Rounds closing on NEAR testnet with their outcome, burns and sparks, read from `list_rounds` (each closed in a linked block). |
 | Open **Keepers** | Twelve agents, each a sub-account of `nearhearth.testnet` with its own key and strategy. Each row shows what it pledged this round and the sentence its strategy would give if it woke now. |
 | On **Keepers**, use the simulation tabs | 60 simulated rounds for four communities: a coordinated swarm roars 59 of 60 rounds; take the closers away and it goes out 45 times. |
-| Open **Council** | The Sputnik DAO that holds 30% of EMBER, its proposals (proposal #0 funded the keepers and was executed on chain), and the warmth leaderboard it pays by. |
+| Open **Council** | The Sputnik DAO that holds 30% of EMBER, its proposals and the warmth leaderboard it pays by. Proposal #0 funded the keepers; #1–#3 seated the three warmest keepers on the council; #4 paid a warmth grant. All five were approved and executed on chain. |
+| Open **For NEAR** | What a hearth brings NEAR (recurring accounts, gas, locked storage, a use for DAOs and agents), live figures from the contract, and how the project pays for itself. |
 | Connect a testnet wallet on the home page, press **Take your 100 EMBER**, then **Pledge** | A drip from the treasury, then your pledge in the current round; a toast links the transaction on NearBlocks and the fire sparks. After the round closes, **Collect** claims your sparks or refund. |
-| `pnpm install && pnpm test` | 10 TypeScript tests pass, including the one that writes the shared vector. |
-| `cd contract && cargo test` | 13 contract tests pass, including `agrees_with_the_typescript_rules_engine`, which replays that vector against the contract to the last unit. |
+| `pnpm install && pnpm test` | 13 TypeScript tests pass (10 for the engine, including the one that writes the shared vector, and 3 for the site's formatting). |
+| `cd contract && cargo test` | 14 contract tests pass, including `agrees_with_the_typescript_rules_engine`, which replays that vector against the contract to the last unit. |
 | `pnpm simulate` | Regenerates `SIMULATION.md` and `data/simulation.json` byte for byte (CI checks this). |
 | `pnpm status` | The live state of the fire, read from NEAR. |
 
@@ -140,6 +142,28 @@ Nothing else can create or destroy EMBER.
 | Council | [`scripts/council.ts`](scripts/council.ts) | Files and votes Sputnik DAO proposals from warmth: grants and council membership. |
 | Site | [`apps/web`](apps/web) | React 19 + Vite 7, static. Reads the contract and the DAO from the browser; wallets via wallet-selector 10. |
 
+## What it is worth to NEAR
+
+NEAR's daily active accounts fell from 2.02 million a day in July 2024 to about 64 thousand, and its memecoins went quiet with them. A hearth gives a token's holders a reason to come back every round, and every return is NEAR activity:
+
+- **Recurring accounts.** Each player makes two transactions a round, a pledge and a claim. On a daily mainnet hearth, 1,000 players are 2,000 transactions a day that would not exist otherwise.
+- **Gas, burned and shared.** Pledges, closes and claims pay gas; most is burned, and NEAR credits 30% of the gas a contract's calls burn to that contract, which pays the hearth's storage.
+- **Locked storage.** Every holder registration (0.0125 NEAR) and every closed round's record keeps NEAR locked for the life of the hearth.
+- **Something real for DAOs and agents to do.** A stock Sputnik DAO that pays by a reputation it cannot fake, and agents on NEAR accounts competing in a live economy.
+
+The [For NEAR page](https://nearhearth.vercel.app/for-near) shows the live figures: on testnet so far, 21+ closed rounds, 148+ pledges and 31,000+ EMBER burned.
+
+## Business model and sustainability
+
+| What | Who pays | Status |
+|---|---|---|
+| EMBER's hearth, keepers and council | Nobody: the council's 30% of supply funds keepers and contributors, and contract gas rewards help pay storage | Live on testnet |
+| A hearth for any memecoin | Launchpads such as meme.cooking, as a launch option, with a launch fee in NEAR; the contract is the same for any NEP-141 token and has no owner, so a launchpad can offer it without being able to rug it | Planned |
+| Hosted keepers | Communities that want their fire tended around the clock, paid in their token through their council | Planned |
+| Pledging from any chain | Players buying EMBER through NEAR Intents; each purchase pays NEAR's Intents fee | Planned |
+
+Running costs today: a static site, public RPCs, testnet gas, and a GitHub Action that plays two swarm rounds every 8 hours.
+
 ## The keepers
 
 | Keeper | Strategy | What it does |
@@ -177,6 +201,8 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 |---|---|
 | Contract | `fire.nearhearth.testnet`, deployed with `new` in [D2qfHZv1…](https://testnet.nearblocks.io/txns/D2qfHZv1gb1tj7sJZNCsgot2cmxTWbkfrjMhapxVGGvd). Code upgraded twice to add read-only views, state kept ([BKCq1y8C…](https://testnet.nearblocks.io/txns/BKCq1y8CKV1CdaPc9Jd6msLNiS5EcC64BemxH8Wa9DNa), [CqEArwpe…](https://testnet.nearblocks.io/txns/CqEArwpeGihQR1hJtbKjqDQ6EWxg9QNphwPgy3hGMjbx)). |
 | Council | Sputnik DAO created by the official testnet factory in [D82wLv3u…](https://testnet.nearblocks.io/txns/D82wLv3u1Q4VB2Qipm3DwLeZZ9S96gZAxc762W8wL14h). Proposal #0, 2,400 EMBER to each of 11 working keepers in one `FunctionCall` proposal: filed in [BEUpeFA6…](https://testnet.nearblocks.io/txns/BEUpeFA6tvjuaKaE6jDymVAJMzxowe18gZSrzfQEmKGg), approved and executed in [FSQ8Y8FZ…](https://testnet.nearblocks.io/txns/FSQ8Y8FZLCbBryWquRpWRku8QWavQbbWfihcFHQswtBL). |
+| Council by warmth | Proposals #1–#3 added keeper-09, keeper-10 and keeper-08 (6,150, 5,300 and 4,000 warmth) to the council; #4 paid 5% of warmth to the five warmest keepers. Each was filed by `pnpm council warmth`, approved by the council and executed (see the Council page). |
+| Storage | The contract pays for its own storage. We found it would run out in about a day of 10-minute rounds, topped it up ([3mdameR4…](https://testnet.nearblocks.io/txns/3mdameR46YnvGzEr2RLFfFUwHiKGPMXfDCfQo4RgXtw5)), made closing free each round's running total, and upgraded without re-init ([7F3cHCUs…](https://testnet.nearblocks.io/txns/7F3cHCUsoipnZqJkSAkGsGmE4g9PiMZ5TBpr8URx3FWy)). `scripts/top-up.ts` keeps it funded. |
 | Keepers | 12 sub-accounts of `nearhearth.testnet`, each with its own key. Round 1 roared with the swarm alone: the steady keepers' first pledge was [CV2aYxmc…](https://testnet.nearblocks.io/txns/CV2aYxmc52QNc16a2fv6dECV3fqtQyNKmmuiMyRTKuKh), and closer keeper-09 claimed 375 EMBER of sparks in [2YWG5nCa…](https://testnet.nearblocks.io/txns/2YWG5nCaGaZLgVdkYoGaPb4pf3y3VkZ5aBEeHq6bC1iJ). |
 | A real wallet | `itup.testnet` (Meteor) played round 20 alongside the swarm: took its drip ([3kJwGxHC…](https://testnet.nearblocks.io/txns/3kJwGxHCNGG6PmEGKAr7DGTBwPneqJsW3xCgZfXg4ESM)), pledged 50 EMBER ([6rbiYRjT…](https://testnet.nearblocks.io/txns/6rbiYRjTckefi1TpkqQefKXtgb576YHaZomK8RUgpr6o)); the closers landed the line at exactly 1,100, the fire roared, and `claim_all` minted it 75 EMBER of sparks ([FvKuMVGN…](https://testnet.nearblocks.io/txns/FvKuMVGN3bftJum9s9kE9bysaGnZTG7ZATgfF2kQDnFL)), shown on NearBlocks as *Mint 75 Ember (EMBER) for itup.testnet*. |
 | Site | https://nearhearth.vercel.app, fully static; every number on it is read from the chain in your browser. |
@@ -207,10 +233,11 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 ## Repository layout
 
 ```
-contract/            The hearth: EMBER + game, Rust, near-sdk 5.29. 13 unit tests.
+contract/            The hearth: EMBER + game, Rust, near-sdk 5.29. 14 unit tests.
 packages/hearth/     Rules engine, keeper strategies, simulation, chain helpers. 10 tests.
-apps/web/            The site (React 19, Vite 7, wallet-selector 10).
-scripts/             swarm, council, simulate, status, setup-keepers, deploy.
+apps/web/            The site (React 19, Vite 7, wallet-selector 10). 3 tests.
+scripts/             swarm, council, simulate, status, setup-keepers, deploy, top-up.
+.github/workflows/   ci.yml (lint, types, tests, simulation reproducible, build, contract tests); swarm.yml (two rounds every 8 hours).
 data/                simulation.json and the swarm's log of every decision.
 RULES.md             The rules, written before the contract.
 SIMULATION.md        Generated by pnpm simulate.
@@ -231,7 +258,8 @@ pnpm swarm --rounds 6        # play six rounds with the keeper swarm (keeper key
 pnpm council list            # the council's proposals
 pnpm council warmth          # propose the warmest keepers into the council and a warmth grant
 pnpm dev                     # the site on http://localhost:5175
-cd contract && cargo test    # 13 contract tests
+pnpm tsx scripts/top-up.ts   # top up the contract's storage if its free balance is low
+cd contract && cargo test    # 14 contract tests
 ```
 
 ## Security

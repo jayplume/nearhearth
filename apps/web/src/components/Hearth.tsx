@@ -35,6 +35,8 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
   const left = s.round_ends_ms - now;
   const roundMs = snap.params.round_secs * 1000;
   const gap = line > pledged ? line - pledged : 0n;
+  const lastRoar = snap.rounds.find((r) => r.outcome === "roared");
+  const recent = [...snap.rounds].slice(0, 14).reverse();
 
   // When a round closes and it roared, the fire throws sparks.
   const lastRound = useRef<number | null>(null);
@@ -228,7 +230,9 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
             {heat >= 1
               ? `Over the line by ${em(pledged - line)}. The fire will roar; extra logs only dilute the sparks.`
               : pledged === 0n
-                ? "Nobody has pledged yet. A cold round resets the streak."
+                ? lastRoar
+                  ? `The fire is waiting. It last roared in round ${lastRoar.round}. If nobody pledges this round, it goes cold and the streak resets.`
+                  : "Nobody has pledged yet. A cold round resets the streak."
                 : `${em(gap)} EMBER short. If it stays short, half of every pledge turns to ash.`}
           </p>
           <dl className="hearth-stats">
@@ -245,6 +249,17 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
               <dd className="tnum">{s.pledgers}</dd>
             </div>
           </dl>
+          {recent.length > 0 && (
+            <ol className="streakline" aria-label="The last rounds with pledges, oldest first">
+              {recent.map((r) => (
+                <li key={r.round} className={`streakline-${r.outcome}`} title={`Round ${r.round}: ${r.outcome === "roared" ? "roared" : "went out"}, ${em(r.pledged)} of ${em(r.line)} EMBER`}>
+                  <span className="sr">
+                    Round {r.round} {r.outcome}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
       </div>
     </section>

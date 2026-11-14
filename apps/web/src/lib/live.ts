@@ -81,6 +81,7 @@ export function useHearth(fast = 5000, slow = 20000) {
     busy.current = true;
     try {
       setSnap(await load());
+      have.current = true;
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -88,8 +89,11 @@ export function useHearth(fast = 5000, slow = 20000) {
       busy.current = false;
     }
   }, []);
+  const have = useRef(false);
   const tick = useCallback(async () => {
     if (busy.current) return;
+    // Nothing loaded yet (the first read failed): try the full read again, fast.
+    if (!have.current) return refresh();
     try {
       const state = await hearth<ChainState>("get_state");
       setSnap((prev) => {
@@ -125,3 +129,20 @@ export async function loadAccount(account: string) {
 }
 
 export const CONTRACT = HEARTH_CONTRACT;
+
+/** Runs `fn` once on mount; undefined until it resolves (and stays undefined on error). */
+export function useAsyncOnce<T>(fn: () => Promise<T>): T | undefined {
+  const [v, setV] = useState<T | undefined>(undefined);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: run once
+  useEffect(() => {
+    let live = true;
+    fn().then(
+      (x) => live && setV(x),
+      () => {},
+    );
+    return () => {
+      live = false;
+    };
+  }, []);
+  return v;
+}

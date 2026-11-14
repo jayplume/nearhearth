@@ -26,6 +26,7 @@ const NAV = [
   { to: "/", label: "The fire" },
   { to: "/swarm", label: "Keepers" },
   { to: "/council", label: "Council" },
+  { to: "/for-near", label: "For NEAR" },
   { to: "/rules", label: "Rules" },
 ];
 
@@ -92,6 +93,7 @@ export function Footer() {
           </a>
           <Link to="/rules">The rules</Link>
           <Link to="/swarm">The simulation</Link>
+          <Link to="/for-near">What it is worth to NEAR</Link>
         </div>
       </div>
     </footer>

@@ -6,7 +6,7 @@ NEAR Hearth runs on NEAR **testnet** with test tokens. This page says what the c
 
 `fire.nearhearth.testnet` has no owner field and no admin method. The parameters are set once in `new` and every method that changes state is one of `pledge`, `close_rounds`, `claim`, `claim_all`, `drip`, and the standard NEP-141/NEP-145 calls. Nobody can mint outside the spark pool, move the treasury, or change the line.
 
-**One honest caveat.** The contract account still holds a full-access key, used three times on 13–14 Nov 2026 to add read-only views (`has_dripped`, `get_accounts`) without touching state. A key that can deploy code could in principle deploy a different contract. A mainnet launch would delete that key after the final deploy (or hand it to the council DAO), which makes "no admin" a property of the chain rather than a promise.
+**One honest caveat.** The contract account still holds a full-access key, used on 13–14 Nov 2026 to add read-only views (`has_dripped`, `get_accounts`) and to free storage at close, never to change the state layout or the rules. A key that can deploy code could in principle deploy a different contract. A mainnet launch would delete that key after the final deploy (or hand it to the council DAO), which makes "no admin" a property of the chain rather than a promise.
 
 ## What the contract checks
 
@@ -20,7 +20,7 @@ NEAR Hearth runs on NEAR **testnet** with test tokens. This page says what the c
 | Wallet confirmation | `pledge` requires exactly 1 yoctoNEAR, like `ft_transfer`, so a function-call access key cannot pledge silently. |
 | Breaking the escrow by unregistering | `storage_unregister(force: true)` is disabled: it would burn a pledger's balance while they had EMBER in escrow. |
 | A long pause | `close_rounds` settles at most 8 pending rounds per call, and cold rounds cost nothing, so a call after a long idle period still fits in gas. |
-| Storage growth | Each pledge record is paid from the contract's NEAR balance. Fine for testnet; a mainnet version would charge it to the pledger. |
+| Running out of storage | The contract pays for its storage. Pledge records are freed on claim and each round's running total is freed at close; the closed-round record (~300 bytes) stays. `scripts/top-up.ts` (also run by the swarm workflow) refills the contract when its free balance drops below 1 NEAR. |
 
 ## Keys
 

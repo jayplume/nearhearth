@@ -57,7 +57,7 @@ function App() {
       <a className="skip" href="#content">
         Skip to content
       </a>
-      <Nav />
+      <Nav at={snap?.at} />
       <div id="content">{body}</div>
       <Footer />
     </>

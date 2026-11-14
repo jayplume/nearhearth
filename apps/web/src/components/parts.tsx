@@ -30,7 +30,25 @@ const NAV = [
   { to: "/rules", label: "Rules" },
 ];
 
-export function Nav() {
+/** "Live" while reads keep arriving; says how old the last read is if they stop. */
+function Freshness({ at }: { at?: number }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  if (!at) return null;
+  const age = Math.max(0, Math.round((now - at) / 1000));
+  const stale = age > 30;
+  return (
+    <span className={`fresh${stale ? " is-stale" : ""}`} title="When this page last read the contract">
+      <i aria-hidden="true" />
+      {stale ? `read ${age} s ago` : "live"}
+    </span>
+  );
+}
+
+export function Nav({ at }: { at?: number }) {
   const { path } = useRoute();
   const [open, setOpen] = useState(false);
   // biome-ignore lint/correctness/useExhaustiveDependencies: close the menu on navigation
@@ -42,6 +60,7 @@ export function Nav() {
           <Logo />
           <span>NEAR Hearth</span>
         </Link>
+        <Freshness at={at} />
         <button type="button" className="nav-toggle" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
           Menu
         </button>

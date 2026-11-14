@@ -1687,3 +1687,28 @@ table[id] {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.fresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+  margin-left: 16px;
+  font-size: var(--t-xs);
+  color: var(--ash-2);
+}
+
+.fresh i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ember);
+  box-shadow: 0 0 8px var(--ember);
+  animation: flicker 1.4s infinite alternate;
+}
+
+.fresh.is-stale i {
+  background: var(--slate);
+  box-shadow: none;
+  animation: none;
+}

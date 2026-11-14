@@ -279,6 +279,19 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
               <dd className="tnum">{s.pledgers}</dd>
             </div>
           </dl>
+          <button
+            type="button"
+            className="share"
+            onClick={() => {
+              const text = `Round ${s.round} of the NEAR Hearth: ${em(pledged)} / ${em(line)} EMBER pledged, streak ${s.streak}. ${heat >= 1 ? "The fire is roaring." : `${em(gap)} short.`} ${window.location.origin}`;
+              navigator.clipboard?.writeText(text).then(
+                () => toast("Round summary copied. Paste it anywhere.", "good"),
+                () => toast(text),
+              );
+            }}
+          >
+            Share this round
+          </button>
           {recent.length > 0 && (
             <ol className="streakline" aria-label="The last rounds with pledges, oldest first">
               {recent.map((r) => (

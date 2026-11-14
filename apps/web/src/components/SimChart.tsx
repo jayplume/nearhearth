@@ -56,6 +56,23 @@ export function SimChart() {
         ))}
         {hover !== null && <line x1={x(hover)} x2={x(hover)} y1={6} y2={H + 22} className="sim-cross" />}
       </svg>
+      <ul className="sim-legend">
+        <li>
+          <i className="sim-key sim-key--line" /> Supply, this community
+        </li>
+        <li>
+          <i className="sim-key sim-key--other" /> The other communities
+        </li>
+        <li>
+          <i className="sim-key sim-key--roared" /> Roared
+        </li>
+        <li>
+          <i className="sim-key sim-key--out" /> Went out
+        </li>
+        <li>
+          <i className="sim-key sim-key--cold" /> Cold
+        </li>
+      </ul>
       <label className="sim-scrub">
         <span className="sr">Read a round</span>
         <input

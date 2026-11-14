@@ -1117,6 +1117,53 @@ code {
   stroke-width: 1;
 }
 
+.sim-legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: var(--t-xs);
+  color: var(--ash);
+}
+
+.sim-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sim-key {
+  display: inline-block;
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.sim-key--line {
+  height: 3px;
+  background: var(--flame);
+}
+
+.sim-key--other {
+  height: 2px;
+  background: var(--ash-2);
+}
+
+.sim-key--roared {
+  background: var(--ember);
+}
+
+.sim-key--out {
+  background: var(--slate);
+}
+
+.sim-key--cold {
+  background: var(--card-2);
+  border: 1px solid var(--rule);
+}
+
 .sim-scrub {
   display: block;
   margin-top: 6px;

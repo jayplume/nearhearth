@@ -22,7 +22,7 @@ export interface Decision {
   reason: string;
 }
 
-export type StrategyId = "steady" | "closer" | "skeptic" | "guardian" | "overeager" | "freerider";
+export type StrategyId = "steady" | "closer" | "skeptic" | "guardian" | "overeager" | "freerider" | "matcher";
 
 export interface Strategy {
   id: StrategyId;
@@ -105,6 +105,20 @@ export const STRATEGIES: Record<StrategyId, Strategy> = {
       const log = pct(v.line, 2_000n);
       if (v.balance < log) return none("Out of EMBER for a big log.");
       return { pledge: log, reason: `Throws 20% of the line, ${fmt(log)} EMBER, without looking.` };
+    },
+  },
+  matcher: {
+    id: "matcher",
+    name: "Matcher",
+    summary: "Matches whatever is already pledged, up to 15% of the line.",
+    wakesAt: 0.6,
+    decide(v) {
+      if (v.mine > 0n) return none("Already matched this round.");
+      const cap = pct(v.line, 1_500n);
+      const log = v.pledged < cap ? v.pledged : cap;
+      if (log === 0n) return none("Nothing pledged yet to match.");
+      if (v.balance < log) return none(`Would match ${fmt(log)} EMBER but holds ${fmt(v.balance)}.`);
+      return { pledge: log, reason: `Matches the ${fmt(v.pledged)} EMBER already pledged, up to 15% of the line.` };
     },
   },
   freerider: {

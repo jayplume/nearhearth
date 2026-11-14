@@ -1615,3 +1615,29 @@ code {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.toc a {
+  font-size: var(--t-xs);
+  color: var(--ash);
+  text-decoration: none;
+  padding: 4px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+
+.toc a:hover {
+  color: var(--bone);
+  border-color: var(--flame);
+}
+
+h2[id],
+table[id] {
+  scroll-margin-top: 84px;
+}

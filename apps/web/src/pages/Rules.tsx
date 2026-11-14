@@ -25,7 +25,13 @@ export function Rules({ snap }: { snap: Snapshot }) {
           Fixed when the contract launched and read live from <code>{HEARTH_CONTRACT}</code> (<code>get_params</code>). The contract has no
           owner and no method that changes them.
         </p>
-        <table className="params">
+        <nav className="toc" aria-label="On this page">
+          <a href="#params">Parameters</a>
+          <a href="#line">The line</a>
+          <a href="#round">A round</a>
+          <a href="#sybil">Sybil resistance</a>
+        </nav>
+        <table className="params" id="params">
           <tbody>
             {rows.map(([k, v, d]) => (
               <tr key={k}>
@@ -54,7 +60,7 @@ export function Rules({ snap }: { snap: Snapshot }) {
             );
           })}
         </div>
-        <h2>A round, step by step</h2>
+        <h2 id="round">A round, step by step</h2>
         <ol className="steps">
           <li>
             <b>Pledge.</b> During the round, anyone holding EMBER calls <code>pledge</code>. The EMBER moves into escrow in the contract.
@@ -68,7 +74,7 @@ export function Rules({ snap }: { snap: Snapshot }) {
             went out. Claims are lazy so closing a round costs the same with two pledgers or two thousand.
           </li>
         </ol>
-        <h2>Sybil resistance, and where it ends</h2>
+        <h2 id="sybil">Sybil resistance, and where it ends</h2>
         <ul className="plain">
           <li>Sparks are pro rata to EMBER pledged, so splitting one holder into many accounts earns nothing extra.</li>
           <li>Warmth is only earned by burning EMBER in roaring rounds, so farming it costs real EMBER.</li>

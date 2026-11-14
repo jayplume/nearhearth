@@ -90,7 +90,10 @@ export const Fire = forwardRef<FireHandle, { heat: number; label: string }>(func
     el.addEventListener("pointermove", onMove);
     el.addEventListener("pointerleave", onLeave);
 
+    // A ceiling on live particles keeps a long burst or a slow device from snowballing.
+    const MAX_PARTICLES = window.innerWidth < 720 ? 450 : 900;
     function spawn(x: number, y: number, ember: boolean, push = 0) {
+      if (ps.length >= MAX_PARTICLES) return;
       const heatNow = Math.max(0.08, Math.min(1.6, heatRef.current));
       const max = ember ? 1.4 + Math.random() * 1.6 : 0.5 + Math.random() * (0.5 + heatNow * 0.7);
       ps.push({

@@ -58,7 +58,8 @@ export const Fire = forwardRef<FireHandle, { heat: number; label: string }>(func
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let w = 0;
     let h = 0;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    // Phones get a lighter canvas: soft glowing particles do not need retina resolution.
+    const dpr = Math.min(window.innerWidth < 720 ? 1.5 : 2, window.devicePixelRatio || 1);
     const resize = () => {
       const r = el.getBoundingClientRect();
       w = r.width;

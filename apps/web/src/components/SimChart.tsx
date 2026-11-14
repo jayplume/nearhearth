@@ -39,6 +39,15 @@ export function SimChart() {
           setHover(Math.max(0, Math.min(59, i)));
         }}
         onPointerLeave={() => setHover(null)}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+            e.preventDefault();
+            const d = e.key === "ArrowRight" ? 1 : -1;
+            setHover((h) => Math.max(0, Math.min(59, (h ?? (d > 0 ? -1 : 60)) + d)));
+          } else if (e.key === "Escape") setHover(null);
+        }}
+        onBlur={() => setHover(null)}
       >
         <line x1={8} x2={W - 8} y1={y(1_000_000)} y2={y(1_000_000)} className="sim-base" />
         <text x={W - 8} y={y(1_000_000) - 6} textAnchor="end" className="sim-label">

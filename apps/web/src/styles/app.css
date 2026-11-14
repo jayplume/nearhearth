@@ -878,6 +878,27 @@ code {
   background: var(--ash-2);
 }
 
+.keeper--steady .keeper-glyph {
+  background: #c98a52;
+}
+
+.keeper--skeptic .keeper-glyph {
+  background: #9f8fbf;
+}
+
+.keeper--closer .keeper-glyph {
+  background: #e7b34a;
+}
+
+.keeper--guardian .keeper-glyph {
+  background: #7fb59a;
+}
+
+.keeper--freerider .keeper-glyph {
+  background: var(--slate-soft);
+  border: 1px solid var(--slate);
+}
+
 .keeper.is-in .keeper-glyph {
   background: var(--ember);
   box-shadow: 0 0 12px var(--ember);

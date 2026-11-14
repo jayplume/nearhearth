@@ -211,6 +211,44 @@ fn the_line_schedule_is_readable() {
 }
 
 #[test]
+#[should_panic(expected = "at most 50 accounts per call")]
+fn batch_reads_are_capped() {
+    let h = hearth(&[], 0);
+    let many: Vec<AccountId> = (0..51).map(|i| acct(&format!("a{i}.testnet"))).collect();
+    h.get_accounts(many, 0);
+}
+
+#[test]
+fn warmth_is_listed_for_every_account_that_earned_it() {
+    let mut h = hearth(&["a.testnet", "b.testnet", "c.testnet"], e(5_000));
+    at("a.testnet", 1_000, yocto());
+    h.pledge(U128(e(600)));
+    at("b.testnet", 2_000, yocto());
+    h.pledge(U128(e(400)));
+    for who in ["a.testnet", "b.testnet"] {
+        at(who, ROUND_MS + 10, NearToken::from_near(0));
+        h.claim_all();
+    }
+    let mut w = h.list_warmth(None, None);
+    w.sort_by(|x, y| y.1 .0.cmp(&x.1 .0));
+    assert_eq!(w.len(), 2, "c never pledged, so it has no warmth");
+    assert_eq!((w[0].0.as_str(), w[0].1 .0), ("a.testnet", e(600)));
+}
+
+#[test]
+#[should_panic(expected = "the drip budget is spent")]
+fn the_drip_budget_runs_out() {
+    at("deployer.testnet", 0, NearToken::from_near(0));
+    let mut p = params();
+    p.drip_budget = U128(e(150));
+    let mut h = Hearth::new(p, acct("council.testnet"), None);
+    at("one.testnet", 1_000, NearToken::from_millinear(50));
+    h.drip();
+    at("two.testnet", 1_000, NearToken::from_millinear(50));
+    h.drip();
+}
+
+#[test]
 fn mul_div_is_exact_beyond_u128() {
     assert_eq!(mul_div(e(1_650), e(500), e(1_200) + 5), 687_499_999_999_999_999_997);
     assert_eq!(mul_div(u128::MAX, 3, 3), u128::MAX);

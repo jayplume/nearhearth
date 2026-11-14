@@ -1723,3 +1723,16 @@ table[id] {
     transform: translateY(6px);
   }
 }
+
+.footer-build {
+  max-width: var(--wrap);
+  margin: 28px auto 0;
+  padding: 0 var(--gutter);
+  font-size: var(--t-xs);
+  color: var(--ash-2);
+}
+
+.footer-build a {
+  color: var(--ash);
+  font-family: var(--mono);
+}

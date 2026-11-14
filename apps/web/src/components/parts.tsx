@@ -3,6 +3,8 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useR
 import { Link, useRoute } from "../lib/router";
 
 export const REPO = "https://github.com/jayplume/nearhearth";
+declare const __COMMIT__: string;
+const COMMIT = typeof __COMMIT__ === "string" ? __COMMIT__ : "dev";
 
 export function Logo({ size = 30 }: { size?: number }) {
   return (
@@ -121,6 +123,12 @@ export function Footer() {
           <Link to="/for-near">What it is worth to NEAR</Link>
         </div>
       </div>
+      <p className="footer-build">
+        Built from{" "}
+        <a href={`${REPO}/commit/${COMMIT}`} target="_blank" rel="noreferrer">
+          {COMMIT}
+        </a>
+      </p>
     </footer>
   );
 }

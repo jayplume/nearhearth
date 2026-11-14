@@ -1654,3 +1654,36 @@ table[id] {
   opacity: 0.7;
   margin-bottom: 12px;
 }
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 40px;
+  margin-top: 24px;
+}
+
+.skeleton-block {
+  border-radius: var(--r-lg);
+  background: linear-gradient(100deg, var(--soot-2) 30%, var(--card) 50%, var(--soot-2) 70%) 0 0 / 300% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+.skeleton-block--copy {
+  height: 360px;
+}
+
+.skeleton-block--stage {
+  height: min(70vh, 640px);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -300% 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .skeleton-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

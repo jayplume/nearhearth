@@ -31,7 +31,19 @@ function App() {
   if (!snap)
     body = (
       <main className="page">
-        <div className="wrap">{error ? <p className="error">Could not reach NEAR testnet: {error}. Trying again in a few seconds.</p> : <Spinner label="Reading the fire from NEAR" />}</div>
+        <div className="wrap">
+          {error ? (
+            <p className="error">Could not reach NEAR testnet: {error}. Trying again in a few seconds.</p>
+          ) : (
+            <div className="skeleton" aria-busy="true">
+              <Spinner label="Reading the fire from NEAR" />
+              <div className="skeleton-grid">
+                <div className="skeleton-block skeleton-block--copy" />
+                <div className="skeleton-block skeleton-block--stage" />
+              </div>
+            </div>
+          )}
+        </div>
       </main>
     );
   else if (path === "/") body = <Home snap={snap} refresh={refresh} />;

@@ -133,3 +133,21 @@ export function validateParams(p: Params): string[] {
   return out;
 }
 
+/** Which ending a round will have, given the line and what is pledged so far. */
+export function outcomeOf(line: bigint, pledged: bigint): Outcome {
+  if (pledged === 0n) return "cold";
+  return pledged >= line ? "roared" : "out";
+}
+
+/**
+ * What a pledge of `extra` would bring back if the round closed now, given
+ * what is already pledged (including the caller's earlier pledges as `mine`).
+ */
+export function previewPledge(p: Params, line: bigint, pledged: bigint, mine: bigint, extra: bigint): { outcome: Outcome; back: bigint; total: bigint } {
+  const total = pledged + extra;
+  const own = mine + extra;
+  const outcome = outcomeOf(line, total);
+  if (outcome === "roared") return { outcome, back: (((line * p.sparkBps) / BPS) * own) / total, total };
+  if (outcome === "out") return { outcome, back: (own * (BPS - p.ashBps)) / BPS, total };
+  return { outcome, back: 0n, total };
+}

@@ -8,6 +8,13 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/jayplume/nearhearth/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/jayplume/nearhearth/actions/workflows/ci.yml/badge.svg" /></a>
+  <img alt="NEAR testnet" src="https://img.shields.io/badge/NEAR-testnet-ff7a1a" />
+  <img alt="Token" src="https://img.shields.io/badge/EMBER-NEP--141-ffc04d" />
+  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-c4b3a5" /></a>
+</p>
+
+<p align="center">
   <a href="https://nearhearth.vercel.app"><b>Live site</b></a> ·
   <a href="RULES.md">RULES.md</a> ·
   <a href="SIMULATION.md">SIMULATION.md</a> ·

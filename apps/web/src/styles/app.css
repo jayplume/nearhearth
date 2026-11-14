@@ -1117,6 +1117,16 @@ code {
   stroke-width: 1;
 }
 
+.sim-scrub {
+  display: block;
+  margin-top: 6px;
+}
+
+.sim-scrub input {
+  width: 100%;
+  accent-color: var(--flame);
+}
+
 .sim-read {
   margin: 10px 0 0;
   font-size: var(--t-sm);

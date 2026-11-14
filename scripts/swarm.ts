@@ -6,6 +6,7 @@
  *
  *   pnpm swarm              # run until stopped
  *   pnpm swarm --rounds 6   # run six rounds, then stop
+ *   pnpm swarm --dry-run    # every keeper decides on the live round, nothing is sent
  */
 import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -21,18 +22,32 @@ import {
   hearth,
   txUrl,
 } from "@nearhearth/hearth";
+import { flag, opt } from "./lib/args.js";
 import { call } from "./lib/signer.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const logFile = join(root, "data", "swarm-log.jsonl");
 mkdirSync(dirname(logFile), { recursive: true });
-const i = process.argv.indexOf("--rounds");
-const maxRounds = i > 0 ? Number(process.argv[i + 1]) : Number.POSITIVE_INFINITY;
+const maxRounds = Number(opt("rounds", "Infinity"));
+const DRY = flag("dry-run");
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const log = (o: Record<string, unknown>) => {
   appendFileSync(logFile, `${JSON.stringify({ at: new Date().toISOString(), ...o })}\n`);
   console.log(Object.values(o).join("  "));
 };
+
+if (DRY) {
+  const s = await hearth<ChainState>("get_state");
+  const roundMs = (await hearth<{ round_secs: number }>("get_params")).round_secs * 1000;
+  const elapsed = 1 - Math.max(0, s.round_ends_ms - Date.now()) / roundMs;
+  console.log(`round ${s.round}: ${fmt(BigInt(s.pledged))} / ${fmt(BigInt(s.line))} pledged, ${Math.round(elapsed * 100)}% through, streak ${s.streak}`);
+  for (const k of KEEPERS) {
+    const [bal, mine] = await Promise.all([hearth<string>("ft_balance_of", { account_id: k.id }), hearth<string>("get_pledge", { round: s.round, account_id: k.id })]);
+    const d = STRATEGIES[k.strategy].decide({ round: s.round, line: BigInt(s.line), pledged: BigInt(s.pledged), elapsed, streak: s.streak, balance: BigInt(bal), mine: BigInt(mine) });
+    console.log(`  ${k.id.padEnd(30)} ${k.strategy.padEnd(9)} ${d.pledge > 0n ? `would pledge ${fmt(d.pledge)}` : "would pass"}: ${d.reason}`);
+  }
+  process.exit(0);
+}
 
 const params = await hearth<{ round_secs: number }>("get_params");
 const roundMs = params.round_secs * 1000;

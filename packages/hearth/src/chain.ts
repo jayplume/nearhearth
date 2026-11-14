@@ -141,3 +141,14 @@ export const KEEPERS: { id: string; strategy: "steady" | "skeptic" | "closer" | 
   { id: `keeper-11.${PARENT}`, strategy: "guardian" },
   { id: `keeper-12.${PARENT}`, strategy: "freerider" },
 ];
+
+/** Every closed round with pledges, newest first, paging through list_rounds 100 at a time. */
+export async function allRounds(max = 1_000): Promise<ChainRound[]> {
+  const out: ChainRound[] = [];
+  for (let from = 0; from < max; from += 100) {
+    const page = await hearth<ChainRound[]>("list_rounds", { from, limit: 100 });
+    out.push(...page);
+    if (page.length < 100) break;
+  }
+  return out;
+}

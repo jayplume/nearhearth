@@ -218,7 +218,7 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 
 ## Demo video
 
-1:51, with subtitles: the problem, the mechanic, the keeper swarm, the simulation, a real Meteor wallet pledging and collecting sparks, the transactions on NearBlocks, and the council. Link added when published.
+2:04, with subtitles: the problem, the mechanic, the keeper swarm, the simulation, a real Meteor wallet pledging and collecting sparks, the transactions on NearBlocks, the council seating agents by warmth, and what a hearth is worth to NEAR. Link added when published.
 
 ## NEAR tracks it fits
 

@@ -13,6 +13,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   type ChainClaimable,
+  type ChainRound,
   type ChainState,
   HEARTH_CONTRACT,
   KEEPERS,
@@ -62,6 +63,11 @@ async function playRound() {
   if (s.needs_close) {
     const c = await call(KEEPERS[0]!.id, HEARTH_CONTRACT, "close_rounds", {});
     log({ round, event: "close_rounds", ok: c.ok, tx: txUrl(c.hash) });
+    const [last] = await hearth<ChainRound[]>("list_rounds", { limit: 1 });
+    if (last) {
+      const back = last.outcome === "roared" ? `${fmt(BigInt(last.payout))} EMBER of sparks` : `${fmt(BigInt(last.burned))} EMBER of ash`;
+      log({ round: last.round, event: "closed", outcome: last.outcome, pledged: `${fmt(BigInt(last.pledged))}/${fmt(BigInt(last.line))}`, result: back, streak: last.streak_after });
+    }
   }
   for (const k of KEEPERS) {
     const due = (await hearth<ChainClaimable[]>("get_claimable", { account_id: k.id })).filter((c) => c.status !== "open");

@@ -80,7 +80,10 @@ if (cmd === "grant-keepers") {
     console.log(`nobody has ${fmt(min)} warmth yet`);
     process.exit(0);
   }
-  for (const { a, w } of warm.slice(0, 3)) {
+  const members = new Set(await voters());
+  const newcomers = warm.filter(({ a }) => !members.has(a)).slice(0, 3);
+  if (newcomers.length === 0) console.log("the warmest keepers are already on the council");
+  for (const { a, w } of newcomers) {
     const kind = { AddMemberToRole: { member_id: a, role: "council" } };
     const id = await propose(`${a} has ${fmt(w)} warmth (every point is EMBER it burned in roaring rounds). Add to the council.`, kind);
     await approve(id, kind);

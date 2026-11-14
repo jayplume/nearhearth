@@ -16,7 +16,7 @@
     "council": "tsx scripts/council.ts",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm -r typecheck && tsc -p tsconfig.json",
     "lint": "biome lint .",
     "dev": "pnpm --filter web dev",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm simulate",

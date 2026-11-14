@@ -1641,3 +1641,16 @@ h2[id],
 table[id] {
   scroll-margin-top: 84px;
 }
+
+.notfound {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding-top: 40px;
+}
+
+.notfound-mark {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.7;
+  margin-bottom: 12px;
+}

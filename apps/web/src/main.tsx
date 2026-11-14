@@ -6,6 +6,7 @@ import { RouterProvider, useRoute } from "./lib/router";
 import { CouncilPage } from "./pages/CouncilPage";
 import { ForNear } from "./pages/ForNear";
 import { Home } from "./pages/Home";
+import { NotFound } from "./pages/NotFound";
 import { Rules } from "./pages/Rules";
 import { Swarm } from "./pages/Swarm";
 import "./styles/tokens.css";
@@ -38,17 +39,7 @@ function App() {
   else if (path === "/council") body = <CouncilPage snap={snap} />;
   else if (path === "/rules") body = <Rules snap={snap} />;
   else if (path === "/for-near") body = <ForNear snap={snap} />;
-  else
-    body = (
-      <main className="page">
-        <div className="wrap">
-          <h1>Nothing burns here</h1>
-          <p>
-            The fire is on <a href="/">the home page</a>.
-          </p>
-        </div>
-      </main>
-    );
+  else body = <NotFound />;
   return (
     <>
       <a className="skip" href="#content">

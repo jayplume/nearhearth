@@ -53,6 +53,12 @@ export function Nav({ at }: { at?: number }) {
   const [open, setOpen] = useState(false);
   // biome-ignore lint/correctness/useExhaustiveDependencies: close the menu on navigation
   useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
   return (
     <header className="nav">
       <div className="nav-inner">
@@ -61,10 +67,10 @@ export function Nav({ at }: { at?: number }) {
           <span>NEAR Hearth</span>
         </Link>
         <Freshness at={at} />
-        <button type="button" className="nav-toggle" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+        <button type="button" className="nav-toggle" aria-expanded={open} aria-controls="main-nav" onClick={() => setOpen((o) => !o)}>
           Menu
         </button>
-        <nav className={`nav-links${open ? " is-open" : ""}`} aria-label="Main">
+        <nav id="main-nav" className={`nav-links${open ? " is-open" : ""}`} aria-label="Main">
           {NAV.map((n) => (
             <Link key={n.to} to={n.to} className="nav-link">
               {n.label}

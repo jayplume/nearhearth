@@ -22,11 +22,11 @@ const lines = [
   "",
   `Line at streak 0: ${fmt(TESTNET_PARAMS.baseLine)} EMBER, rising 10% per streak level to 3×. Spark pool: 150% of the line. Ash: 50% of pledges when the fire goes out. Treasury burn: 2% per round that goes out.`,
   "",
-  "| Scenario | Roared | Out | Cold | Best streak | Supply after 60 rounds | Treasury after 60 rounds |",
-  "|---|---|---|---|---|---|---|",
+  "| Scenario | Roared | Out | Cold | Best streak | Burned | Minted as sparks | Supply after 60 rounds | Treasury after 60 rounds |",
+  "|---|---|---|---|---|---|---|---|---|",
   ...results.map(
     (r) =>
-      `| ${r.title} | ${r.summary.roared} | ${r.summary.out} | ${r.summary.cold} | ${r.summary.bestStreak} | ${r.summary.supplyChangePct > 0 ? "+" : ""}${r.summary.supplyChangePct}% | ${r.summary.treasuryChangePct}% |`,
+      `| ${r.title} | ${r.summary.roared} | ${r.summary.out} | ${r.summary.cold} | ${r.summary.bestStreak} | ${n(r.summary.burned)} | ${n(r.summary.minted)} | ${r.summary.supplyChangePct > 0 ? "+" : ""}${r.summary.supplyChangePct}% | ${r.summary.treasuryChangePct}% |`,
   ),
   "",
 ];

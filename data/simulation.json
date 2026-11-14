@@ -672,7 +672,9 @@
     "cold": 0,
     "bestStreak": 57,
     "supplyChangePct": 6.15,
-    "treasuryChangePct": -2
+    "treasuryChangePct": -2,
+    "burned": 166640,
+    "minted": 228150
    },
    "title": "A coordinated swarm",
    "description": "6 steady keepers, 2 skeptics, 3 closers and a guardian. Late in each round the closers fill the gap, each up to a quarter of the line."
@@ -1347,7 +1349,9 @@
     "cold": 0,
     "bestStreak": 2,
     "supplyChangePct": -43.04,
-    "treasuryChangePct": -59.71
+    "treasuryChangePct": -59.71,
+    "burned": 453165,
+    "minted": 22800
    },
    "title": "Nobody closes the gap",
    "description": "The same crowd without closers or a guardian. Pledges land wherever they land."
@@ -2022,7 +2026,9 @@
     "cold": 0,
     "bestStreak": 60,
     "supplyChangePct": -4.78,
-    "treasuryChangePct": 0
+    "treasuryChangePct": 0,
+    "burned": 286340,
+    "minted": 238500
    },
    "title": "An overeager crowd",
    "description": "10 holders who throw 20% of the line every round without looking. The fire roars, but the sparks are diluted."
@@ -2697,7 +2703,9 @@
     "cold": 0,
     "bestStreak": 9,
     "supplyChangePct": -15.95,
-    "treasuryChangePct": -24.64
+    "treasuryChangePct": -24.64,
+    "burned": 245151,
+    "minted": 85650
    },
    "title": "Matchers instead of closers",
    "description": "6 steady keepers and 4 matchers who copy what is already pledged. Momentum without anyone aiming for the line."
@@ -3372,7 +3380,9 @@
     "cold": 2,
     "bestStreak": 16,
     "supplyChangePct": -38.82,
-    "treasuryChangePct": -56.32
+    "treasuryChangePct": -56.32,
+    "burned": 431705,
+    "minted": 43500
    },
    "title": "A fading community",
    "description": "The coordinated swarm, but each round 2% fewer keepers show up, and free riders join."

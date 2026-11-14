@@ -36,7 +36,7 @@ export interface SimRow {
 export interface SimResult {
   scenario: string;
   rows: SimRow[];
-  summary: { roared: number; out: number; cold: number; bestStreak: number; supplyChangePct: number; treasuryChangePct: number };
+  summary: { roared: number; out: number; cold: number; bestStreak: number; supplyChangePct: number; treasuryChangePct: number; burned: number; minted: number };
 }
 
 /** Small seeded PRNG so every run of a scenario is identical. */
@@ -110,6 +110,8 @@ export function simulate(p: Params, sc: Scenario, rounds = 60, seed = 7): SimRes
       bestStreak: state.bestStreak,
       supplyChangePct: Math.round(((last.supply - first) / first) * 10_000) / 100,
       treasuryChangePct: Math.round(((last.treasury - toEmber(TREASURY_SHARE)) / toEmber(TREASURY_SHARE)) * 10_000) / 100,
+      burned: Math.round(rows.reduce((a, r) => a + r.burned, 0)),
+      minted: Math.round(rows.reduce((a, r) => a + r.minted, 0)),
     },
   };
 }

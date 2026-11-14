@@ -21,6 +21,14 @@ const TITLES: Record<string, string> = {
   "/for-near": "What a hearth is worth to NEAR · NEAR Hearth",
 };
 
+const DESCRIPTIONS: Record<string, string> = {
+  "/": "EMBER is a memecoin with a fire. Holders and a swarm of keeper agents pledge every round on NEAR; reach the line together and it roars, fall short and it burns the treasury.",
+  "/swarm": "Twelve keeper agents on their own NEAR sub-accounts, their live reasoning, and a 60-round simulation of four communities.",
+  "/council": "The Hearth Council, a Sputnik DAO holding 30% of EMBER, pays and seats keepers by warmth: EMBER they burned in rounds that roared.",
+  "/for-near": "What a hearth brings NEAR: recurring accounts, gas burned, storage locked, a job for DAOs and agents, and how the project pays for itself.",
+  "/rules": "The launch parameters of the NEAR Hearth contract, read live from the chain, and how a round works.",
+};
+
 function App() {
   const { path } = useRoute();
   const { snap, error, refresh } = useHearth();
@@ -31,6 +39,7 @@ function App() {
   }, [path, pct]);
   useEffect(() => {
     document.title = TITLES[path] ?? "Not found · NEAR Hearth";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", DESCRIPTIONS[path] ?? DESCRIPTIONS["/"]!);
     if (!window.location.hash) window.scrollTo({ top: 0 });
   }, [path]);
   let body: React.ReactNode;

@@ -196,6 +196,9 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
                       Fill the gap ({em(gap)})
                     </button>
                   )}
+                  <button type="button" className="chip-btn" onClick={() => setAmount(String(Math.floor(emNum(me.balance))))}>
+                    All in ({em(me.balance)})
+                  </button>
                   {[10, 50, 100].map((n) => (
                     <button key={n} type="button" className="chip-btn" onClick={() => setAmount(String(n))}>
                       {n}

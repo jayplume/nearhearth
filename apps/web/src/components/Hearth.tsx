@@ -1,4 +1,4 @@
-import { ONE_YOCTO, STORAGE_DEPOSIT, txUrl } from "@nearhearth/hearth";
+import { ONE_YOCTO, STORAGE_DEPOSIT, previewPledge, toParams, txUrl } from "@nearhearth/hearth";
 import { useEffect, useRef, useState } from "react";
 import { clock, em, emNum, toYocto } from "../lib/format";
 import { type Snapshot, loadAccount } from "../lib/live";
@@ -65,7 +65,7 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-read the account whenever the chain snapshot moves
   useEffect(() => {
     if (!account) return setMe(null);
-    loadAccount(account).then(setMe, () => setMe(null));
+    loadAccount(account, s.round).then(setMe, () => setMe(null));
   }, [account, snap.at]);
 
   async function act(id: string, label: string, method: string, args: Record<string, unknown>, deposit: string, after?: (v: unknown) => string) {
@@ -80,7 +80,7 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
       );
       if (method === "pledge") fire.current?.burst(0.35);
       await refresh();
-      if (account) setMe(await loadAccount(account));
+      if (account) setMe(await loadAccount(account, s.round));
     } catch (e) {
       toast(e instanceof Error ? e.message : String(e), "bad");
     } finally {
@@ -173,6 +173,18 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
                     {busy === "pledge" ? "Waiting…" : "Pledge"}
                   </button>
                 </div>
+                {amountOk &&
+                  me &&
+                  (() => {
+                    const p = previewPledge(toParams(snap.params), line, pledged, me.pledge, BigInt(toYocto(amountNum)));
+                    return (
+                      <p className={`pledge-preview pledge-preview--${p.outcome}`}>
+                        {p.outcome === "roared"
+                          ? `If the round closed now, it would roar: about ${em(p.back)} EMBER back to you as sparks.`
+                          : `If the round closed now, it would still be ${em(line - p.total)} short: ${em(p.back)} EMBER back, the rest ash.`}
+                      </p>
+                    );
+                  })()}
                 {amountIssue && (
                   <p className="pledge-msg" role="status">
                     {amountIssue}

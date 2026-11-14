@@ -118,14 +118,15 @@ export function useHearth(fast = 5000, slow = 20000) {
   return { snap, error, refresh };
 }
 
-export async function loadAccount(account: string) {
+/** Everything the play panel needs about one account, including its pledge in `round`. */
+export async function loadAccount(account: string, round: number) {
   const [[a], claimable, dripped, storage] = await Promise.all([
-    hearth<ChainAccount[]>("get_accounts", { account_ids: [account], round: 0 }),
+    hearth<ChainAccount[]>("get_accounts", { account_ids: [account], round }),
     hearth<ChainClaimable[]>("get_claimable", { account_id: account }),
     hearth<boolean>("has_dripped", { account_id: account }),
     hearth<unknown>("storage_balance_of", { account_id: account }),
   ]);
-  return { balance: BigInt(a?.balance ?? "0"), claimable, warmth: BigInt(a?.warmth ?? "0"), dripped, registered: storage !== null };
+  return { balance: BigInt(a?.balance ?? "0"), pledge: BigInt(a?.pledge ?? "0"), claimable, warmth: BigInt(a?.warmth ?? "0"), dripped, registered: storage !== null };
 }
 
 export const CONTRACT = HEARTH_CONTRACT;

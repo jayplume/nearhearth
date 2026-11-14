@@ -584,6 +584,16 @@ code {
   padding: 10px 16px;
 }
 
+.pledge-preview {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--ash);
+}
+
+.pledge-preview--roared {
+  color: var(--flame);
+}
+
 .pledge-msg {
   margin: 0;
   font-size: var(--t-xs);

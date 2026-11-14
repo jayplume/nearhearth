@@ -42,7 +42,7 @@ function Freshness({ at }: { at?: number }) {
   const stale = age > 30;
   return (
     <span className={`fresh${stale ? " is-stale" : ""}`} title="When this page last read the contract">
-      <i aria-hidden="true" />
+      <span className="fresh-dot" />
       {stale ? `read ${age} s ago` : "live"}
     </span>
   );

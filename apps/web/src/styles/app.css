@@ -1698,7 +1698,7 @@ table[id] {
   color: var(--ash-2);
 }
 
-.fresh i {
+.fresh-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -1707,7 +1707,7 @@ table[id] {
   animation: flicker 1.4s infinite alternate;
 }
 
-.fresh.is-stale i {
+.fresh.is-stale .fresh-dot {
   background: var(--slate);
   box-shadow: none;
   animation: none;

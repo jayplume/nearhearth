@@ -186,9 +186,9 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
                     );
                   })()}
                 {amountIssue && (
-                  <p className="pledge-msg" role="status">
+                  <output className="pledge-msg" htmlFor="amt">
                     {amountIssue}
-                  </p>
+                  </output>
                 )}
                 <div className="pledge-quick">
                   {gap > 0n && gap <= me.balance && (

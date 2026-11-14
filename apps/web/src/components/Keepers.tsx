@@ -19,13 +19,14 @@ export function Keepers({ snap, compact = false }: { snap: Snapshot; compact?: b
   return (
     <>
       {!compact && (
-        <div className="roster-tools" role="group" aria-label="Show keepers by strategy">
+        <fieldset className="roster-tools">
+          <legend className="sr">Show keepers by strategy</legend>
           {kinds.map((k) => (
             <button key={k} type="button" className={`chip-btn${only === k ? " is-on" : ""}`} aria-pressed={only === k} onClick={() => setOnly(k)}>
               {k === "all" ? `All ${snap.keepers.length}` : `${STRATEGIES[k as keyof typeof STRATEGIES].name} (${snap.keepers.filter((x) => x.strategy === k).length})`}
             </button>
           ))}
-        </div>
+        </fieldset>
       )}
     <ol className="roster">
       {rows.map((k) => {

@@ -595,6 +595,7 @@ code {
 }
 
 .pledge-msg {
+  display: block;
   margin: 0;
   font-size: var(--t-xs);
   color: var(--bad);
@@ -849,6 +850,8 @@ code {
 
 /* ---------- keepers ---------- */
 .roster-tools {
+  border: 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;

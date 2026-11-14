@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "NEAR Hearth: EMBER, a NEP-141 memecoin with a fire the community keeps alive."
 license = "MIT"
-repository = "https://github.com/Nailer/nearhearth"
+repository = "https://github.com/jayplume/nearhearth"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

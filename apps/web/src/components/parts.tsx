@@ -2,7 +2,7 @@ import { COUNCIL_DAO, HEARTH_CONTRACT, accountUrl } from "@nearhearth/hearth";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Link, useRoute } from "../lib/router";
 
-export const REPO = "https://github.com/Nailer/nearhearth";
+export const REPO = "https://github.com/jayplume/nearhearth";
 
 export function Logo({ size = 30 }: { size?: number }) {
   return (

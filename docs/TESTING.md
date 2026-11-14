@@ -30,7 +30,7 @@ You need a NEAR testnet account (Meteor, Intear, HERE or Sender; a new one can b
 ## 3. From a clone
 
 ```bash
-git clone https://github.com/Nailer/nearhearth && cd nearhearth
+git clone https://github.com/jayplume/nearhearth && cd nearhearth
 pnpm install
 pnpm test          # 13 tests (10 engine + 3 site): the line, roar/out/cold, claims never exceed the pool, sybil split, strategies, simulation determinism, shared vector
 pnpm simulate      # regenerates SIMULATION.md byte for byte

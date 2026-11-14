@@ -9,6 +9,7 @@ Line at streak 0: 1,000 EMBER, rising 10% per streak level to 3×. Spark pool: 1
 | A coordinated swarm | 59 | 1 | 0 | 57 | +6.15% | -2% |
 | Nobody closes the gap | 15 | 45 | 0 | 2 | -43.04% | -59.71% |
 | An overeager crowd | 60 | 0 | 0 | 60 | -4.78% | 0% |
+| Matchers instead of closers | 46 | 14 | 0 | 9 | -15.95% | -24.64% |
 | A fading community | 17 | 41 | 2 | 16 | -38.82% | -56.32% |
 
 ## A coordinated swarm
@@ -70,6 +71,26 @@ The same crowd without closers or a guardian. Pledges land wherever they land.
 | 47 | 3,000 | 5,400 | roared | 48 | 962,960 | 700,000 |
 | 53 | 3,000 | 5,400 | roared | 54 | 959,960 | 700,000 |
 | 59 | 3,000 | 6,000 | roared | 60 | 952,160 | 700,000 |
+
+## Matchers instead of closers
+
+6 steady keepers and 4 matchers who copy what is already pledged. Momentum without anyone aiming for the line.
+
+| Round | Line | Pledged | Outcome | Streak | Supply | Treasury |
+|---|---|---|---|---|---|---|
+| 0 | 1,000 | 1,050 | roared | 1 | 1,000,450 | 700,000 |
+| 1 | 1,100 | 1,100 | roared | 2 | 1,001,000 | 700,000 |
+| 2 | 1,200 | 1,320 | roared | 3 | 1,001,480 | 700,000 |
+| 5 | 1,100 | 1,155 | roared | 2 | 987,790 | 686,000 |
+| 11 | 1,700 | 1,615 | out | 0 | 975,727 | 672,280 |
+| 17 | 1,500 | 1,650 | roared | 6 | 978,422 | 672,280 |
+| 23 | 1,100 | 1,320 | roared | 2 | 966,904 | 658,834 |
+| 29 | 1,000 | 1,100 | roared | 1 | 941,050 | 632,745 |
+| 35 | 1,100 | 1,320 | roared | 2 | 916,433 | 607,688 |
+| 41 | 1,000 | 950 | out | 0 | 880,348 | 571,951 |
+| 47 | 1,300 | 1,365 | roared | 4 | 858,499 | 549,302 |
+| 53 | 1,100 | 1,155 | roared | 2 | 837,549 | 527,549 |
+| 59 | 1,700 | 2,040 | roared | 8 | 840,499 | 527,549 |
 
 ## A fading community
 

@@ -140,6 +140,13 @@ export const SCENARIOS: Scenario[] = [
     presence: () => 0.9,
   },
   {
+    id: "matchers",
+    title: "Matchers instead of closers",
+    description: "6 steady keepers and 4 matchers who copy what is already pledged. Momentum without anyone aiming for the line.",
+    keepers: [...many(6, "steady", "steady"), ...many(4, "matcher", "matcher")],
+    presence: () => 0.9,
+  },
+  {
     id: "fading",
     title: "A fading community",
     description: "The coordinated swarm, but each round 2% fewer keepers show up, and free riders join.",

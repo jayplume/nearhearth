@@ -153,6 +153,17 @@ export const Fire = forwardRef<FireHandle, { heat: number; label: string }>(func
     let raf = 0;
     let last = performance.now();
     let carry = 0;
+    // A hidden tab does not need a fire: stop drawing, and do not dump a backlog of particles on return.
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      } else if (!raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(loop);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
     const loop = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
@@ -215,6 +226,7 @@ export const Fire = forwardRef<FireHandle, { heat: number; label: string }>(func
     raf = requestAnimationFrame(loop);
     return () => {
       cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerleave", onLeave);

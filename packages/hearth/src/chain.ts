@@ -121,6 +121,8 @@ export async function view<T>(contract: string, method: string, args: Record<str
       lastError = e;
       // A contract panic is an answer, not an outage: do not retry it elsewhere.
       if (e instanceof Error && e.message.startsWith(`${method}:`)) throw e;
+      // Give a rate-limited RPC a moment before trying the next one.
+      await new Promise((r) => setTimeout(r, 150 * (i + 1) + Math.random() * 100));
     }
   }
   throw lastError instanceof Error ? lastError : new Error(String(lastError));

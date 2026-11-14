@@ -456,3 +456,11 @@
 {"at":"2026-11-14T03:49:10.645Z","round":29,"keeper":"keeper-08.nearhearth.testnet","strategy":"closer","event":"pass","reason":"The line is already reached; adding more would only dilute the sparks."}
 {"at":"2026-11-14T03:49:51.288Z","round":29,"keeper":"keeper-11.nearhearth.testnet","strategy":"guardian","event":"pass","reason":"Nothing to protect: the fire will roar."}
 {"at":"2026-11-14T03:49:51.468Z","round":29,"event":"round_end","pledged":"2,000","line":"2,000","streak":10}
+{"at":"2026-11-14T03:50:31.856Z","round":30,"event":"close_rounds","ok":true,"tx":"https://testnet.nearblocks.io/txns/dSmWPLe5Ztg5w4s8sFBF4Nbdzu8c4Q9zHEBJcoey49V"}
+{"at":"2026-11-14T03:50:33.980Z","round":30,"keeper":"keeper-01.nearhearth.testnet","event":"claim_all","got":"300","tx":"https://testnet.nearblocks.io/txns/5Crx6GWJM3Nfk6o4MRoxTBQSmA5GnLGgQm3wgskYn2Nw"}
+{"at":"2026-11-14T03:50:36.499Z","round":30,"keeper":"keeper-02.nearhearth.testnet","event":"claim_all","got":"300","tx":"https://testnet.nearblocks.io/txns/BrTkFTGiGuaNr6PNPxEqepTdTEMdWfodUaxRURNzUqHh"}
+{"at":"2026-11-14T03:50:38.940Z","round":30,"keeper":"keeper-03.nearhearth.testnet","event":"claim_all","got":"300","tx":"https://testnet.nearblocks.io/txns/6VpkWfMWwAco9j6NcJcwzbzn2F5o5oXGUK6mt98Fxcib"}
+{"at":"2026-11-14T03:50:40.919Z","round":30,"keeper":"keeper-04.nearhearth.testnet","event":"claim_all","got":"300","tx":"https://testnet.nearblocks.io/txns/7XpHDncaaagQeK7hwCw9LUD2XVrBgVF9Q88uBM2re5Cq"}
+{"at":"2026-11-14T03:50:43.328Z","round":30,"keeper":"keeper-05.nearhearth.testnet","event":"claim_all","got":"300","tx":"https://testnet.nearblocks.io/txns/CHLnDuJHrDNmmGPWLwfiMKkCrGR21cZNgTtMVz4ckJdF"}
+{"at":"2026-11-14T03:50:45.746Z","round":30,"keeper":"keeper-09.nearhearth.testnet","event":"claim_all","got":"750","tx":"https://testnet.nearblocks.io/txns/EL2rZpFmKZPRAZFxJTDVwf2zd4dDehGUwAvVvvdNces1"}
+{"at":"2026-11-14T03:50:48.318Z","round":30,"keeper":"keeper-10.nearhearth.testnet","event":"claim_all","got":"750","tx":"https://testnet.nearblocks.io/txns/95rmgxRmLWtDdCj9FCNNgpRZvGyrhLr9wMh49JddQjEb"}

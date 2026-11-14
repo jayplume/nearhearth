@@ -1359,7 +1359,11 @@ code {
   }
 
   .hearth-stage {
-    min-height: 420px;
+    min-height: 580px;
+  }
+
+  .hearth-meter-line span {
+    display: none;
   }
 
   .hearth-read {

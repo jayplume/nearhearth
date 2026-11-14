@@ -411,6 +411,11 @@ impl Hearth {
             .collect()
     }
 
+    /// The line a round needs at a given streak (the schedule is fixed at launch).
+    pub fn get_line_for(&self, streak: u32) -> U128 {
+        U128(self.line_for(streak))
+    }
+
     pub fn has_dripped(&self, account_id: AccountId) -> bool {
         self.dripped.contains(&account_id)
     }

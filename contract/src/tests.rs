@@ -202,6 +202,15 @@ fn views_report_what_is_claimable() {
 }
 
 #[test]
+fn the_line_schedule_is_readable() {
+    let h = hearth(&[], 0);
+    assert_eq!(h.get_line_for(0).0, e(1_000));
+    assert_eq!(h.get_line_for(5).0, e(1_500));
+    assert_eq!(h.get_line_for(20).0, e(3_000));
+    assert_eq!(h.get_line_for(u32::MAX).0, e(3_000));
+}
+
+#[test]
 fn mul_div_is_exact_beyond_u128() {
     assert_eq!(mul_div(e(1_650), e(500), e(1_200) + 5), 687_499_999_999_999_999_997);
     assert_eq!(mul_div(u128::MAX, 3, 3), u128::MAX);

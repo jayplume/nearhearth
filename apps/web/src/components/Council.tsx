@@ -2,7 +2,18 @@ import { COUNCIL_DAO, accountUrl } from "@nearhearth/hearth";
 import { em, short } from "../lib/format";
 import type { Snapshot } from "../lib/live";
 
-const kindName = (k: unknown) => (typeof k === "string" ? k : Object.keys(k as object)[0] ?? "?");
+const KINDS: Record<string, string> = {
+  AddMemberToRole: "New council member",
+  RemoveMemberFromRole: "Member removed",
+  FunctionCall: "Payment from the treasury",
+  Transfer: "Transfer",
+  ChangePolicy: "Policy change",
+  Vote: "Poll",
+};
+const kindName = (k: unknown) => {
+  const raw = typeof k === "string" ? k : (Object.keys(k as object)[0] ?? "?");
+  return KINDS[raw] ?? raw;
+};
 
 export function Council({ snap }: { snap: Snapshot }) {
   const c = snap.council;
@@ -15,7 +26,21 @@ export function Council({ snap }: { snap: Snapshot }) {
         </div>
         <div>
           <dt>Members</dt>
-          <dd>{c.members.map(short).join(", ")}</dd>
+          <dd>
+            <ul className="members">
+              {c.members.map((m) => {
+                const w = snap.warmth.find((x) => x.account === m)?.warmth;
+                return (
+                  <li key={m}>
+                    <a href={accountUrl(m)} target="_blank" rel="noreferrer">
+                      {short(m)}
+                    </a>
+                    {w !== undefined ? <span className="muted"> {em(w)} warmth</span> : <span className="muted"> founder</span>}
+                  </li>
+                );
+              })}
+            </ul>
+          </dd>
         </div>
         <div>
           <dt>DAO</dt>

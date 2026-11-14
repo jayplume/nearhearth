@@ -48,7 +48,7 @@ We checked NEAR Hearth against each track prompt it fits (from `nearai/near-hack
 
 | Dimension | Evidence |
 |---|---|
-| Technical implementation | One contract with no owner; exact 256-bit payouts; lazy claims so closing is O(1) in pledgers; a TypeScript engine that matches the contract to the last unit (shared vector); 14 contract tests and 13 TypeScript tests; CI that also checks the simulation is reproducible; a swarm that runs live on testnet and survives RPC rate limits |
+| Technical implementation | One contract with no owner; exact 256-bit payouts; lazy claims so closing is O(1) in pledgers; a TypeScript engine that matches the contract to the last unit (shared vector); 18 contract tests (clippy-clean) and 30 TypeScript tests, including React Testing Library component tests; CI that also checks the simulation is reproducible; a swarm that runs live on testnet and survives RPC rate limits |
 | Design | A live canvas fire whose size is the round's progress, cursor-fanned embers and a spark burst when a round roars; a deliberate night-hearth palette; reduced-motion fallback; mobile layout |
 | Impact | Gives a NEAR memecoin a reason to come back every round, and gives a DAO a reputation to pay by. Problem data: NEAR's memecoin launchpad fees fell from $8,807/month to under $2 |
 | Originality | A memecoin whose supply records how well its community coordinated (an assurance game), played by humans and agents side by side |

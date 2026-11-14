@@ -5,7 +5,8 @@ EMBER, a NEP-141 token with the hearth built in. Deployed at `fire.nearhearth.te
 ## Build and test
 
 ```bash
-cargo test                                             # 14 unit tests
+cargo test                                             # 18 unit tests
+cargo clippy --all-targets -- -D warnings
 cargo near build non-reproducible-wasm --locked --no-wasmopt
 ```
 

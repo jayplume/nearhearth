@@ -61,8 +61,8 @@ Everything is in one contract with **no owner and no admin method**: the paramet
 | Open **Council** | The Sputnik DAO that holds 30% of EMBER, its proposals and the warmth leaderboard it pays by. Proposal #0 funded the keepers; #1–#3 seated the three warmest keepers on the council; #4 paid a warmth grant. All five were approved and executed on chain. |
 | Open **For NEAR** | What a hearth brings NEAR (recurring accounts, gas, locked storage, a use for DAOs and agents), live figures from the contract, and how the project pays for itself. |
 | Connect a testnet wallet on the home page, press **Take your 100 EMBER**, then **Pledge** | A drip from the treasury, then your pledge in the current round; a toast links the transaction on NearBlocks and the fire sparks. After the round closes, **Collect** claims your sparks or refund. |
-| `pnpm install && pnpm test` | 13 TypeScript tests pass (10 for the engine, including the one that writes the shared vector, and 3 for the site's formatting). |
-| `cd contract && cargo test` | 14 contract tests pass, including `agrees_with_the_typescript_rules_engine`, which replays that vector against the contract to the last unit. |
+| `pnpm install && pnpm test` | 30 TypeScript tests pass: 20 for the engine (including the one that writes the shared vector) and 10 for the site, among them React Testing Library tests of the keeper roster, the council and the rules page. |
+| `cd contract && cargo test` | 18 contract tests pass, including `agrees_with_the_typescript_rules_engine`, which replays that vector against the contract to the last unit. |
 | `pnpm simulate` | Regenerates `SIMULATION.md` and `data/simulation.json` byte for byte (CI checks this). |
 | `pnpm status` | The live state of the fire, read from NEAR. |
 
@@ -256,10 +256,10 @@ More words explained in [docs/GLOSSARY.md](docs/GLOSSARY.md).
 ## Repository layout
 
 ```
-contract/            The hearth: EMBER + game, Rust, near-sdk 5.29. 14 unit tests.
-packages/hearth/     Rules engine, keeper strategies, simulation, chain helpers. 10 tests.
-apps/web/            The site (React 19, Vite 7, wallet-selector 10). 3 tests.
-scripts/             swarm, council, simulate, status, setup-keepers, deploy, top-up.
+contract/            The hearth: EMBER + game, Rust, near-sdk 5.29. 18 unit tests, clippy-clean.
+packages/hearth/     Rules engine, keeper strategies, simulation, chain helpers. 20 tests.
+apps/web/            The site (React 19, Vite 7, wallet-selector 10). 10 tests incl. React Testing Library.
+scripts/             swarm, council, simulate, status, health, setup-keepers, deploy, top-up.
 .github/workflows/   ci.yml (lint, types, tests, simulation reproducible, build, contract tests); swarm.yml (two rounds every 8 hours).
 data/                simulation.json and the swarm's log of every decision.
 RULES.md             The rules, written before the contract.
@@ -274,15 +274,19 @@ Node 22+, pnpm 10, Rust (for the contract).
 
 ```bash
 pnpm install
-pnpm test                    # rules engine, strategies, simulation, shared vector
+pnpm check                   # lint, types (packages and scripts), 30 tests, simulation
+pnpm test                    # rules engine, strategies, simulation, shared vector, site components
 pnpm simulate                # 60 rounds × 4 communities → SIMULATION.md
 pnpm status                  # the fire, read from NEAR testnet
 pnpm swarm --rounds 6        # play six rounds with the keeper swarm (keeper keys needed)
+pnpm swarm --dry-run         # what every keeper would do in the live round, nothing sent
+pnpm health                  # RPCs, storage headroom, keepers' gas and EMBER, the council
+pnpm status --json           # the fire as JSON
 pnpm council list            # the council's proposals
-pnpm council warmth          # propose the warmest keepers into the council and a warmth grant
+pnpm council warmth          # propose the warmest keepers into the council and a warmth grant (--dry-run to preview)
 pnpm dev                     # the site on http://localhost:5175
 pnpm tsx scripts/top-up.ts   # top up the contract's storage if its free balance is low
-cd contract && cargo test    # 14 contract tests
+cd contract && cargo test    # 18 contract tests
 ```
 
 ## Security

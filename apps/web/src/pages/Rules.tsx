@@ -1,4 +1,4 @@
-import { HEARTH_CONTRACT } from "@nearhearth/hearth";
+import { HEARTH_CONTRACT, lineFor, toParams } from "@nearhearth/hearth";
 import { em } from "../lib/format";
 import type { Snapshot } from "../lib/live";
 import { REPO } from "../components/parts";
@@ -38,6 +38,22 @@ export function Rules({ snap }: { snap: Snapshot }) {
             ))}
           </tbody>
         </table>
+        <h2 id="line">The line, streak by streak</h2>
+        <p>
+          The longer the fire roars, the more it takes. Current streak: <b>{snap.state.streak}</b>.
+        </p>
+        <div className="schedule">
+          {[0, 1, 2, 3, 5, 8, 10, 15, 20].map((k) => {
+            const line = lineFor(toParams(p), k);
+            return (
+              <div key={k} className={snap.state.streak === k ? "is-now" : undefined}>
+                <span>streak {k}</span>
+                <b className="tnum">{em(line)}</b>
+                <i style={{ height: `${Number((line * 100n) / lineFor(toParams(p), 20))}%` }} />
+              </div>
+            );
+          })}
+        </div>
         <h2>A round, step by step</h2>
         <ol className="steps">
           <li>

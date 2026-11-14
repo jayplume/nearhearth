@@ -230,7 +230,7 @@ fn warmth_is_listed_for_every_account_that_earned_it() {
         h.claim_all();
     }
     let mut w = h.list_warmth(None, None);
-    w.sort_by(|x, y| y.1 .0.cmp(&x.1 .0));
+    w.sort_by_key(|y| std::cmp::Reverse(y.1 .0));
     assert_eq!(w.len(), 2, "c never pledged, so it has no warmth");
     assert_eq!((w[0].0.as_str(), w[0].1 .0), ("a.testnet", e(600)));
 }

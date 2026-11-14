@@ -19,7 +19,9 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "biome lint .",
     "dev": "pnpm --filter web dev",
-    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm simulate"
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm simulate",
+    "doctor": "tsx scripts/doctor.ts",
+    "top-up": "tsx scripts/top-up.ts"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

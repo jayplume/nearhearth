@@ -23,6 +23,11 @@ const TITLES: Record<string, string> = {
 function App() {
   const { path } = useRoute();
   const { snap, error, refresh } = useHearth();
+  // On the home page the tab shows the round's progress, so the fire is visible from another tab.
+  const pct = snap && BigInt(snap.state.line) > 0n ? Number((BigInt(snap.state.pledged) * 100n) / BigInt(snap.state.line)) : null;
+  useEffect(() => {
+    if (path === "/" && pct !== null) document.title = `${pct >= 100 ? "Roaring" : `${pct}%`} · NEAR Hearth`;
+  }, [path, pct]);
   useEffect(() => {
     document.title = TITLES[path] ?? "Not found · NEAR Hearth";
     if (!window.location.hash) window.scrollTo({ top: 0 });

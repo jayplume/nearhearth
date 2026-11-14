@@ -1,5 +1,6 @@
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Footer, Nav, Spinner, ToastProvider } from "./components/parts";
 import { useHearth } from "./lib/live";
 import { RouterProvider, useRoute } from "./lib/router";
@@ -63,7 +64,9 @@ function App() {
         Skip to content
       </a>
       <Nav at={snap?.at} />
-      <div id="content">{body}</div>
+      <div id="content">
+        <ErrorBoundary key={path}>{body}</ErrorBoundary>
+      </div>
       <Footer />
     </>
   );

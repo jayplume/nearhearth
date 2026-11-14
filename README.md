@@ -178,6 +178,7 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 | Contract | `fire.nearhearth.testnet`, deployed with `new` in [D2qfHZv1…](https://testnet.nearblocks.io/txns/D2qfHZv1gb1tj7sJZNCsgot2cmxTWbkfrjMhapxVGGvd). Code upgraded twice to add read-only views, state kept ([BKCq1y8C…](https://testnet.nearblocks.io/txns/BKCq1y8CKV1CdaPc9Jd6msLNiS5EcC64BemxH8Wa9DNa), [CqEArwpe…](https://testnet.nearblocks.io/txns/CqEArwpeGihQR1hJtbKjqDQ6EWxg9QNphwPgy3hGMjbx)). |
 | Council | Sputnik DAO created by the official testnet factory in [D82wLv3u…](https://testnet.nearblocks.io/txns/D82wLv3u1Q4VB2Qipm3DwLeZZ9S96gZAxc762W8wL14h). Proposal #0, 2,400 EMBER to each of 11 working keepers in one `FunctionCall` proposal: filed in [BEUpeFA6…](https://testnet.nearblocks.io/txns/BEUpeFA6tvjuaKaE6jDymVAJMzxowe18gZSrzfQEmKGg), approved and executed in [FSQ8Y8FZ…](https://testnet.nearblocks.io/txns/FSQ8Y8FZLCbBryWquRpWRku8QWavQbbWfihcFHQswtBL). |
 | Keepers | 12 sub-accounts of `nearhearth.testnet`, each with its own key. Round 1 roared with the swarm alone: the steady keepers' first pledge was [CV2aYxmc…](https://testnet.nearblocks.io/txns/CV2aYxmc52QNc16a2fv6dECV3fqtQyNKmmuiMyRTKuKh), and closer keeper-09 claimed 375 EMBER of sparks in [2YWG5nCa…](https://testnet.nearblocks.io/txns/2YWG5nCaGaZLgVdkYoGaPb4pf3y3VkZ5aBEeHq6bC1iJ). |
+| A real wallet | `itup.testnet` (Meteor) played round 20 alongside the swarm: took its drip ([3kJwGxHC…](https://testnet.nearblocks.io/txns/3kJwGxHCNGG6PmEGKAr7DGTBwPneqJsW3xCgZfXg4ESM)), pledged 50 EMBER ([6rbiYRjT…](https://testnet.nearblocks.io/txns/6rbiYRjTckefi1TpkqQefKXtgb576YHaZomK8RUgpr6o)); the closers landed the line at exactly 1,100, the fire roared, and `claim_all` minted it 75 EMBER of sparks ([FvKuMVGN…](https://testnet.nearblocks.io/txns/FvKuMVGN3bftJum9s9kE9bysaGnZTG7ZATgfF2kQDnFL)), shown on NearBlocks as *Mint 75 Ember (EMBER) for itup.testnet*. |
 | Site | https://nearhearth.vercel.app, fully static; every number on it is read from the chain in your browser. |
 | Mainnet | Not deployed. Test tokens only. |
 
@@ -188,6 +189,10 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 - **DAOs** reward contributors by provable, non-transferable participation (warmth) instead of token balance, and pay through their existing Sputnik DAO.
 - **Agent builders** get a small, real economy to test coordination strategies in: public state, a clear payoff, and a scoreboard (the swarm runner is ~100 lines).
 - **Researchers** get a live assurance game with on-chain outcomes, and a simulator that reproduces it.
+
+## Demo video
+
+1:51, with subtitles: the problem, the mechanic, the keeper swarm, the simulation, a real Meteor wallet pledging and collecting sparks, the transactions on NearBlocks, and the council. Link added when published.
 
 ## NEAR tracks it fits
 

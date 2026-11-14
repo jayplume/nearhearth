@@ -6,7 +6,9 @@
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@10.2.0",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "simulate": "tsx scripts/simulate.ts",
     "swarm": "tsx scripts/swarm.ts",
@@ -16,11 +18,17 @@
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "lint": "biome lint .",
-    "dev": "pnpm --filter web dev"
+    "dev": "pnpm --filter web dev",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm simulate"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"],
-    "ignoredBuiltDependencies": ["@biomejs/biome", "secp256k1"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
+      "@biomejs/biome",
+      "secp256k1"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

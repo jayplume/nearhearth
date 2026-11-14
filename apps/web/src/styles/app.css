@@ -584,6 +584,16 @@ code {
   padding: 10px 16px;
 }
 
+.pledge-msg {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--bad);
+}
+
+.pledge input[aria-invalid="true"] {
+  border-color: var(--bad);
+}
+
 .pledge-quick {
   display: flex;
   flex-wrap: wrap;

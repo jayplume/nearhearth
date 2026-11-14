@@ -92,6 +92,16 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
   const dueTotal = due.reduce((a, c) => a + BigInt(c.amount), 0n);
   const amountNum = Number(amount);
   const amountOk = Number.isFinite(amountNum) && amountNum >= 1 && me !== null && BigInt(toYocto(amountNum)) <= me.balance;
+  const amountIssue =
+    amount.trim() === "" || me === null
+      ? null
+      : !Number.isFinite(amountNum)
+        ? "Type a number of EMBER."
+        : amountNum < 1
+          ? "The smallest pledge is 1 EMBER."
+          : BigInt(toYocto(amountNum)) > me.balance
+            ? `You hold ${em(me.balance)} EMBER.`
+            : null;
 
   return (
     <section className="hearth" aria-label="The current round">
@@ -158,11 +168,16 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
               >
                 <label htmlFor="amt">EMBER to pledge in round {s.round}</label>
                 <div className="pledge-row">
-                  <input id="amt" inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 50" />
+                  <input id="amt" inputMode="decimal" aria-invalid={amountIssue !== null} value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 50" />
                   <button type="submit" className="btn btn--ember" disabled={!amountOk || busy !== null}>
                     {busy === "pledge" ? "Waiting…" : "Pledge"}
                   </button>
                 </div>
+                {amountIssue && (
+                  <p className="pledge-msg" role="status">
+                    {amountIssue}
+                  </p>
+                )}
                 <div className="pledge-quick">
                   {gap > 0n && gap <= me.balance && (
                     <button type="button" className="chip-btn" onClick={() => setAmount(String(Math.ceil(emNum(gap))))}>

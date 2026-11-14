@@ -20,7 +20,7 @@
     "@near-wallet-selector/sender": "10.1.4",
     "@nearhearth/hearth": "workspace:*",
     "buffer": "6.0.3",
-    "near-api-js": "6.5.1",
+    "near-api-js": "7.5.2",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },

@@ -21,6 +21,16 @@ writeFileSync(
     {
       version: 3,
       routes: [
+        {
+          src: "/(.*)",
+          headers: {
+            "x-content-type-options": "nosniff",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "x-frame-options": "DENY",
+            "permissions-policy": "camera=(), microphone=(), geolocation=()",
+          },
+          continue: true,
+        },
         { src: "^/assets/(.*)$", headers: { "cache-control": "public, max-age=31536000, immutable" }, continue: true },
         { handle: "filesystem" },
         // Single-page app: unknown paths load it and it routes itself.

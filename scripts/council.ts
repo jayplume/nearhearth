@@ -5,11 +5,12 @@
  *   pnpm council grant-keepers         # fund the keeper swarm from the council (one proposal, many transfers)
  *   pnpm council warmth [--min 2000]   # propose the warmest keepers into the council's "keepers" role and a warmth grant
  *   pnpm council list                  # the DAO's latest proposals
+ *   add --dry-run to print the proposals without sending anything
  *
  * Proposer: nearhearth-fund.testnet. Voter: nearhearth.testnet (one approval passes, see the DAO policy).
  */
 import { COUNCIL_DAO, HEARTH_CONTRACT, KEEPERS, ONE, fmt, txUrl, view } from "@nearhearth/hearth";
-import { opt } from "./lib/args.js";
+import { flag, opt } from "./lib/args.js";
 import { call } from "./lib/signer.js";
 
 const PROPOSER = "nearhearth-fund.testnet";
@@ -17,7 +18,13 @@ const VOTER = "nearhearth.testnet";
 const BOND = "100000000000000000000000"; // 0.1 NEAR, the DAO's proposal bond
 const b64 = (o: unknown) => Buffer.from(JSON.stringify(o)).toString("base64");
 
+const DRY = flag("dry-run");
+
 async function propose(description: string, kind: unknown): Promise<number> {
+  if (DRY) {
+    console.log(`[dry run] would propose: ${description}\n  ${JSON.stringify(kind).slice(0, 220)}`);
+    return -1;
+  }
   const s = await call(PROPOSER, COUNCIL_DAO, "add_proposal", { proposal: { description, kind } }, BOND, "100000000000000");
   if (!s.ok) throw new Error(`add_proposal failed: ${s.failure} ${txUrl(s.hash)}`);
   console.log(`proposed #${s.value}: ${description}\n  ${txUrl(s.hash)}`);
@@ -34,6 +41,7 @@ async function voters(): Promise<string[]> {
 
 /** Votes until the DAO's threshold is met: as the council grows, one approval stops being enough. */
 async function approve(id: number, kind: unknown) {
+  if (id < 0) return;
   for (const v of await voters()) {
     const p = await view<{ status: string; votes: Record<string, string> }>(COUNCIL_DAO, "get_proposal", { id });
     if (p.status !== "InProgress") break;

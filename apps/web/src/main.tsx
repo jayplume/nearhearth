@@ -65,7 +65,11 @@ function App() {
       </a>
       <Nav at={snap?.at} />
       <div id="content">
-        <ErrorBoundary key={path}>{body}</ErrorBoundary>
+        <ErrorBoundary key={path}>
+          <div className="route" key={path}>
+            {body}
+          </div>
+        </ErrorBoundary>
       </div>
       <Footer />
     </>

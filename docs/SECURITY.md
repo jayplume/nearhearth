@@ -6,7 +6,7 @@ NEAR Hearth runs on NEAR **testnet** with test tokens. This page says what the c
 
 `fire.nearhearth.testnet` has no owner field and no admin method. The parameters are set once in `new` and every method that changes state is one of `pledge`, `close_rounds`, `claim`, `claim_all`, `drip`, and the standard NEP-141/NEP-145 calls. Nobody can mint outside the spark pool, move the treasury, or change the line.
 
-**One honest caveat.** The contract account still holds a full-access key, used on 13–14 Nov 2026 to add read-only views (`has_dripped`, `get_accounts`) and to free storage at close, never to change the state layout or the rules. A key that can deploy code could in principle deploy a different contract. A mainnet launch would delete that key after the final deploy (or hand it to the council DAO), which makes "no admin" a property of the chain rather than a promise.
+**One honest caveat.** The contract account still holds a full-access key, used on 13–14 Nov 2026 to add read-only views (`has_dripped`, `get_accounts`, `get_line_for`) and to free storage at close (latest upgrade [C5i8E5rw…](https://testnet.nearblocks.io/txns/C5i8E5rwAFpikrqSD4rNjFLFVkdV5msMhiACKpZfMiA2)), never to change the state layout or the rules. A key that can deploy code could in principle deploy a different contract. A mainnet launch would delete that key after the final deploy (or hand it to the council DAO), which makes "no admin" a property of the chain rather than a promise.
 
 ## What the contract checks
 

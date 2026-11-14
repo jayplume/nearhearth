@@ -9,16 +9,13 @@
  * Proposer: nearhearth-fund.testnet. Voter: nearhearth.testnet (one approval passes, see the DAO policy).
  */
 import { COUNCIL_DAO, HEARTH_CONTRACT, KEEPERS, ONE, fmt, txUrl, view } from "@nearhearth/hearth";
+import { opt } from "./lib/args.js";
 import { call } from "./lib/signer.js";
 
 const PROPOSER = "nearhearth-fund.testnet";
 const VOTER = "nearhearth.testnet";
 const BOND = "100000000000000000000000"; // 0.1 NEAR, the DAO's proposal bond
 const b64 = (o: unknown) => Buffer.from(JSON.stringify(o)).toString("base64");
-const arg = (n: string) => {
-  const i = process.argv.indexOf(`--${n}`);
-  return i > 0 ? process.argv[i + 1] : undefined;
-};
 
 async function propose(description: string, kind: unknown): Promise<number> {
   const s = await call(PROPOSER, COUNCIL_DAO, "add_proposal", { proposal: { description, kind } }, BOND, "100000000000000");
@@ -62,13 +59,13 @@ const transfers = (pays: { to: string; amount: bigint; memo: string }[]) => ({
 
 const cmd = process.argv[2] ?? "list";
 if (cmd === "grant-keepers") {
-  const each = BigInt(arg("each") ?? "2400") * ONE;
+  const each = BigInt(opt("each") ?? "2400") * ONE;
   const pays = KEEPERS.filter((k) => k.strategy !== "freerider").map((k) => ({ to: k.id, amount: each, memo: "council grant: keeper starter stack" }));
   const kind = transfers(pays);
   const id = await propose(`Fund the keeper swarm: ${fmt(each)} EMBER to each of ${pays.length} working keepers (the free rider gets nothing).`, kind);
   await approve(id, kind);
 } else if (cmd === "warmth") {
-  const min = BigInt(arg("min") ?? "2000") * ONE;
+  const min = BigInt(opt("min") ?? "2000") * ONE;
   const all = await view<[string, string][]>(HEARTH_CONTRACT, "list_warmth", { limit: 200 });
   const warm = all.map(([a, w]) => ({ a, w: BigInt(w) })).filter((x) => x.w >= min).sort((x, y) => (y.w > x.w ? 1 : -1));
   if (warm.length === 0) {

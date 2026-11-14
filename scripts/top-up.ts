@@ -6,15 +6,12 @@
  *   pnpm tsx scripts/top-up.ts [--from nearhearth-fund.testnet] [--min 1] [--amount 3]
  */
 import { HEARTH_CONTRACT, txUrl } from "@nearhearth/hearth";
+import { opt } from "./lib/args.js";
 import { transferNear } from "./lib/signer.js";
 
-const arg = (n: string, d: string) => {
-  const i = process.argv.indexOf(`--${n}`);
-  return i > 0 ? process.argv[i + 1]! : d;
-};
-const from = arg("from", "nearhearth-fund.testnet");
-const min = Number(arg("min", "1"));
-const amount = Number(arg("amount", "3"));
+const from = opt("from", "nearhearth-fund.testnet");
+const min = Number(opt("min", "1"));
+const amount = Number(opt("amount", "3"));
 const r = await fetch("https://near-testnet.drpc.org", {
   method: "POST",
   headers: { "Content-Type": "application/json" },

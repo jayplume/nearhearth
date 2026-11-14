@@ -1,0 +1,6 @@
+* text=auto eol=lf
+pnpm-lock.yaml linguist-generated=true -diff
+contract/Cargo.lock linguist-generated=true -diff
+data/*.json linguist-generated=true
+SIMULATION.md linguist-generated=true
+*.png binary

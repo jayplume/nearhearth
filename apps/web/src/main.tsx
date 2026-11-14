@@ -1,15 +1,17 @@
-import { StrictMode, useEffect } from "react";
+import { StrictMode, Suspense, lazy, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Footer, Nav, Spinner, ToastProvider } from "./components/parts";
 import { useHearth } from "./lib/live";
 import { RouterProvider, useRoute } from "./lib/router";
-import { CouncilPage } from "./pages/CouncilPage";
-import { ForNear } from "./pages/ForNear";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
-import { Rules } from "./pages/Rules";
-import { Swarm } from "./pages/Swarm";
+
+// The home page loads with the app; the other pages load when first visited.
+const Swarm = lazy(() => import("./pages/Swarm").then((m) => ({ default: m.Swarm })));
+const CouncilPage = lazy(() => import("./pages/CouncilPage").then((m) => ({ default: m.CouncilPage })));
+const ForNear = lazy(() => import("./pages/ForNear").then((m) => ({ default: m.ForNear })));
+const Rules = lazy(() => import("./pages/Rules").then((m) => ({ default: m.Rules })));
 import "./styles/tokens.css";
 import "./styles/app.css";
 
@@ -75,9 +77,19 @@ function App() {
       <Nav at={snap?.at} />
       <div id="content">
         <ErrorBoundary key={path}>
-          <div className="route" key={path}>
-            {body}
-          </div>
+          <Suspense
+            fallback={
+              <main className="page">
+                <div className="wrap">
+                  <Spinner label="Opening the page" />
+                </div>
+              </main>
+            }
+          >
+            <div className="route" key={path}>
+              {body}
+            </div>
+          </Suspense>
         </ErrorBoundary>
       </div>
       <Footer />

@@ -101,3 +101,9 @@ export async function createSubAccount(parent: string, sub: string, yoctoNear: b
   });
   return outcome(res);
 }
+
+/** Sends NEAR from one account to another (storage top-ups). */
+export async function transferNear(from: string, to: string, yoctoNear: bigint): Promise<Sent> {
+  const res = await sendVia(from, { receiverId: to, actions: [actions.transfer(yoctoNear)], waitUntil: "EXECUTED_OPTIMISTIC", throwOnFailure: false });
+  return outcome(res);
+}

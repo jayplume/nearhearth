@@ -170,6 +170,21 @@ fn the_line_rises_with_the_streak_and_a_cold_round_resets_it() {
 }
 
 #[test]
+fn closing_frees_the_running_total_and_claiming_frees_the_pledge() {
+    let mut h = hearth(&["a.testnet"], e(5_000));
+    at("a.testnet", 1_000, yocto());
+    h.pledge(U128(e(1_000)));
+    assert!(h.pledged.get(&0).is_some());
+    at("a.testnet", ROUND_MS + 1, NearToken::from_near(0));
+    h.close_rounds();
+    assert!(h.pledged.get(&0).is_none(), "the round record carries the total");
+    assert_eq!(h.get_round(0).unwrap().pledged.0, e(1_000));
+    h.claim(0);
+    assert_eq!(h.get_pledge(0, acct("a.testnet")).0, 0, "claiming frees the pledge record");
+    assert!(h.get_claimable(acct("a.testnet")).is_empty());
+}
+
+#[test]
 fn views_report_what_is_claimable() {
     let mut h = hearth(&["a.testnet"], e(5_000));
     at("a.testnet", 1_000, yocto());

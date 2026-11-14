@@ -541,6 +541,8 @@ impl Hearth {
         );
         self.closed.insert(round, rec);
         self.history.push(round);
+        // The record keeps the total; the running total for an open round is no longer needed.
+        self.pledged.remove(&round);
     }
 
     fn payout(&self, rec: &RoundRecord, mine: u128) -> u128 {

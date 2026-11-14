@@ -28,3 +28,10 @@ for (const k of KEEPERS) {
     console.log(`drip   ${k.id} ${s.ok ? "ok" : s.failure} ${txUrl(s.hash)}`);
   } else console.log(`ready  ${k.id} ${BigInt(bal) / 10n ** 18n} EMBER`);
 }
+
+// Summary: what each keeper holds now.
+console.log("\nkeeper                          strategy   EMBER");
+for (const k of KEEPERS) {
+  const bal = BigInt(await view<string>(HEARTH_CONTRACT, "ft_balance_of", { account_id: k.id }));
+  console.log(`${k.id.padEnd(32)}${k.strategy.padEnd(11)}${(bal / 10n ** 18n).toLocaleString("en-US")}`);
+}

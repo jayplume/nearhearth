@@ -120,7 +120,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <div className="toasts" aria-live="polite">
         {items.map((t) => (
           <div key={t.id} className={`toast toast--${t.tone}`}>
-            {t.msg}
+            <div>{t.msg}</div>
+            <button type="button" className="toast-x" aria-label="Dismiss" onClick={() => setItems((xs) => xs.filter((x) => x.id !== t.id))}>
+              ×
+            </button>
           </div>
         ))}
       </div>

@@ -1281,6 +1281,28 @@ code {
   animation: toast-in 0.35s var(--ease) both;
 }
 
+.toast {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.toast-x {
+  flex: none;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ash);
+  background: none;
+  border: 0;
+  padding: 0 2px;
+  cursor: pointer;
+}
+
+.toast-x:hover {
+  color: var(--bone);
+}
+
 .toast--good {
   border-left-color: var(--ember);
 }

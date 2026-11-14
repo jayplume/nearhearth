@@ -118,3 +118,18 @@ export const fmt = (x: bigint, dp = 0): string => {
 
 export const toEmber = (x: bigint): number => Number(x / 10n ** 12n) / 1e6;
 export const ember = (n: number): bigint => BigInt(Math.round(n * 1e6)) * 10n ** 12n;
+
+/** The same checks the contract makes in `new`. Returns the problems, empty when the parameters are valid. */
+export function validateParams(p: Params): string[] {
+  const out: string[] = [];
+  if (p.roundSecs < 60) out.push("roundSecs must be at least 60");
+  if (p.baseLine <= 0n) out.push("baseLine must be positive");
+  if (p.minPledge <= 0n) out.push("minPledge must be positive");
+  if (p.maxLineMultiple < 1n) out.push("maxLineMultiple must be at least 1");
+  if (p.sparkBps <= 0n) out.push("sparkBps must be positive");
+  if (p.ashBps > BPS) out.push("ashBps cannot exceed 10,000");
+  if (p.treasuryBurnBps > 1_000n) out.push("treasuryBurnBps cannot exceed 1,000 (10%)");
+  if (p.dripBudget > TREASURY_SHARE) out.push("dripBudget exceeds the treasury");
+  return out;
+}
+

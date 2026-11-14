@@ -13,8 +13,11 @@ export function Keepers({ snap, compact = false }: { snap: Snapshot; compact?: b
   const roundMs = snap.params.round_secs * 1000;
   const elapsed = 1 - Math.max(0, s.round_ends_ms - Date.now()) / roundMs;
   const [only, setOnly] = useState<string>("all");
+  const [order, setOrder] = useState<"roster" | "warmth" | "ember">("roster");
   const kinds = ["all", ...new Set(snap.keepers.map((k) => k.strategy))];
-  const visible = only === "all" ? snap.keepers : snap.keepers.filter((k) => k.strategy === only);
+  const filtered = only === "all" ? snap.keepers : snap.keepers.filter((k) => k.strategy === only);
+  const by = (f: (k: (typeof filtered)[number]) => bigint) => [...filtered].sort((a, b) => (f(b) > f(a) ? 1 : f(b) < f(a) ? -1 : 0));
+  const visible = order === "warmth" ? by((k) => k.warmth) : order === "ember" ? by((k) => k.balance) : filtered;
   const rows = compact ? visible.slice(0, 6) : visible;
   return (
     <>
@@ -26,6 +29,14 @@ export function Keepers({ snap, compact = false }: { snap: Snapshot; compact?: b
               {k === "all" ? `All ${snap.keepers.length}` : `${STRATEGIES[k as keyof typeof STRATEGIES].name} (${snap.keepers.filter((x) => x.strategy === k).length})`}
             </button>
           ))}
+          <label className="roster-sort">
+            Sort
+            <select value={order} onChange={(e) => setOrder(e.target.value as typeof order)}>
+              <option value="roster">by keeper</option>
+              <option value="warmth">by warmth</option>
+              <option value="ember">by EMBER</option>
+            </select>
+          </label>
         </fieldset>
       )}
     <ol className="roster">

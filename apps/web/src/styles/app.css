@@ -1482,3 +1482,21 @@ code {
     gap: 2px;
   }
 }
+
+.roster-sort {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-xs);
+  color: var(--ash);
+}
+
+.roster-sort select {
+  font: inherit;
+  color: var(--bone);
+  background: var(--card-2);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 4px 10px;
+}

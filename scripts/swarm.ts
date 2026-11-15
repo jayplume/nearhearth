@@ -25,7 +25,7 @@ import {
 } from "@nearhearth/hearth";
 import { aiKeeperDecide } from "./lib/ai-keeper.js";
 import { flag, opt } from "./lib/args.js";
-import { call } from "./lib/signer.js";
+import { call, hasKey } from "./lib/signer.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const logFile = join(root, "data", "swarm-log.jsonl");
@@ -51,6 +51,10 @@ if (DRY) {
   process.exit(0);
 }
 
+// A keeper whose key this runner doesn't hold sits out (for example a new keeper before the NEAR_KEYS secret is updated).
+const PLAYING = KEEPERS.filter((k) => hasKey(k.id));
+for (const k of KEEPERS) if (!PLAYING.includes(k)) log({ event: "skipped", keeper: k.id, reason: "no key for this keeper on this runner" });
+
 const params = await hearth<{ round_secs: number }>("get_params");
 const roundMs = params.round_secs * 1000;
 let played = 0;
@@ -62,7 +66,7 @@ async function playRound() {
 
   // 1. Close the last round and collect what each keeper is owed.
   if (s.needs_close) {
-    const c = await call(KEEPERS[0]!.id, HEARTH_CONTRACT, "close_rounds", {});
+    const c = await call(PLAYING[0]!.id, HEARTH_CONTRACT, "close_rounds", {});
     log({ round, event: "close_rounds", ok: c.ok, tx: txUrl(c.hash) });
     const [last] = await hearth<ChainRound[]>("list_rounds", { limit: 1 });
     if (last) {
@@ -70,7 +74,7 @@ async function playRound() {
       log({ round: last.round, event: "closed", outcome: last.outcome, pledged: `${fmt(BigInt(last.pledged))}/${fmt(BigInt(last.line))}`, result: back, streak: last.streak_after });
     }
   }
-  for (const k of KEEPERS) {
+  for (const k of PLAYING) {
     const due = (await hearth<ChainClaimable[]>("get_claimable", { account_id: k.id })).filter((c) => c.status !== "open");
     if (due.length === 0) continue;
     const c = await call(k.id, HEARTH_CONTRACT, "claim_all", {});
@@ -78,7 +82,7 @@ async function playRound() {
   }
 
   // 2. Each keeper wakes at its own time in the round and decides from public state.
-  const order = KEEPERS.map((k) => ({ k, at: startMs + STRATEGIES[k.strategy].wakesAt * roundMs + Math.random() * 0.03 * roundMs })).sort((a, b) => a.at - b.at);
+  const order = PLAYING.map((k) => ({ k, at: startMs + STRATEGIES[k.strategy].wakesAt * roundMs + Math.random() * 0.03 * roundMs })).sort((a, b) => a.at - b.at);
   for (const { k, at } of order) {
     const wait = at - Date.now();
     if (wait > 0) await sleep(wait);

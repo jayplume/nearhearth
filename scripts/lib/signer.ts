@@ -11,6 +11,16 @@ import { Account, KeyPair, actions } from "near-api-js";
 
 const keychain = () => join(process.env.NEAR_CREDENTIALS_DIR ?? join(homedir(), ".near-credentials"), "testnet");
 
+/** True when this machine can sign for the account (NEAR_KEYS or the NEAR CLI keychain). */
+export function hasKey(accountId: string): boolean {
+  try {
+    loadKey(accountId);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function loadKey(accountId: string): string {
   if (process.env.NEAR_KEYS) {
     const key = (JSON.parse(process.env.NEAR_KEYS) as Record<string, unknown>)[accountId];

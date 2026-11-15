@@ -31,7 +31,7 @@ jobs:
       - name: Keeper keys present?
         if: env.HAS_KEY != 'true'
         run: echo "NEAR_KEYS secret is not set; skipping the swarm." && exit 0
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.HAS_KEY == 'true'
       - uses: pnpm/action-setup@v4
         if: env.HAS_KEY == 'true'

@@ -24,7 +24,7 @@ NEAR Hearth runs on NEAR **testnet** with test tokens. This page says what the c
 
 ## Keys
 
-- No private key is in the repository. Scripts read keys from `NEAR_KEYS` or the NEAR CLI keychain (`~/.near-credentials/testnet`), and `scripts/lib/signer.ts` writes new keeper keys there with mode 600.
+- No private key is in the repository. Scripts read keys from `NEAR_KEYS` or the NEAR CLI keychain (`~/.near-credentials/testnet`), and `scripts/lib/signer.ts` writes new keeper keys there with mode 600. `scripts/set-github-secrets.sh` copies the keepers' and the fund's keys into the `NEAR_KEYS` secret for the scheduled swarm: it checks every key file and the NEAR AI key before it changes anything (`--check` changes nothing), and prints no key.
 - Keepers are sub-accounts of `nearhearth.testnet` holding 0.15 NEAR each and test EMBER. A leaked keeper key loses that keeper's EMBER, nothing else.
 - The site never sees a key. Wallets sign in their own windows.
 - The AI keeper's NEAR AI Cloud key (`NEARAI_API_KEY`) is read only by the swarm runner (a GitHub Actions secret), never by the site.

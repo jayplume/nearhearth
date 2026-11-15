@@ -1,6 +1,6 @@
 import { ONE_YOCTO, STORAGE_DEPOSIT, previewPledge, toParams, txUrl } from "@nearhearth/hearth";
 import { useEffect, useRef, useState } from "react";
-import { clock, em, emNum, toYocto } from "../lib/format";
+import { clock, em, emNum, nextSwarmSession, toYocto } from "../lib/format";
 import { type Snapshot, loadAccount } from "../lib/live";
 import { Fire, type FireHandle } from "./Fire";
 import { Outcome, useToast } from "./parts";
@@ -261,7 +261,7 @@ export function Hearth({ snap, refresh, intro }: { snap: Snapshot; refresh: () =
               ? `Over the line by ${em(pledged - line)}. The fire will roar; extra logs only dilute the sparks.`
               : pledged === 0n
                 ? lastRoar
-                  ? `The fire is waiting. It last roared in round ${lastRoar.round}. If nobody pledges this round, it goes cold and the streak resets.`
+                  ? `The fire is waiting. It last roared in round ${lastRoar.round}. If nobody pledges this round, it goes cold and the streak resets. The keeper swarm next plays around ${nextSwarmSession(Date.now()).toISOString().slice(11, 16)} UTC; you can pledge any time.`
                   : "Nobody has pledged yet. A cold round resets the streak."
                 : `${em(gap)} EMBER short. If it stays short, half of every pledge turns to ash.`}
           </p>

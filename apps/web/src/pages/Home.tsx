@@ -112,9 +112,10 @@ export function Home({ snap, refresh }: { snap: Snapshot; refresh: () => Promise
           <div>
             <h2>The keepers.</h2>
             <p>
-              Twelve agents, each on its own NEAR sub-account, each running one strategy from a single readable file. Steady keepers throw
+              Thirteen agents, each on its own NEAR sub-account. Twelve run one strategy from a single readable file: steady keepers throw
               early, skeptics wait for momentum, closers land the gap in the last minutes, a guardian protects long streaks, and one free rider
-              shows what doing nothing earns. They see only what you see.
+              shows what doing nothing earns. The thirteenth asks a model on NEAR AI Cloud what to pledge, within the same caps. They see only
+              what you see.
             </p>
             <Link to="/swarm" className="btn">
               Watch the whole swarm

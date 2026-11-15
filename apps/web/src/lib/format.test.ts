@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clock, em, emNum, short, toYocto } from "./format";
+import { clock, em, emNum, nextSwarmSession, short, toYocto } from "./format";
 
 const E = (n: number) => BigInt(n) * 10n ** 18n;
 
@@ -21,5 +21,13 @@ describe("EMBER formatting", () => {
     expect(clock(-5)).toBe("0:00");
     expect(short("keeper-08.nearhearth.testnet")).toBe("keeper-08");
     expect(short("itup.testnet")).toBe("itup");
+  });
+});
+
+describe("nextSwarmSession", () => {
+  it("is the next 00:17, 08:17 or 16:17 UTC", () => {
+    expect(nextSwarmSession(Date.UTC(2026, 10, 15, 2, 50)).toISOString()).toBe("2026-11-15T08:17:00.000Z");
+    expect(nextSwarmSession(Date.UTC(2026, 10, 15, 8, 17)).toISOString()).toBe("2026-11-15T16:17:00.000Z");
+    expect(nextSwarmSession(Date.UTC(2026, 10, 15, 23, 59)).toISOString()).toBe("2026-11-16T00:17:00.000Z");
   });
 });

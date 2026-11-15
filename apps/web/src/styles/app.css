@@ -915,6 +915,16 @@ code {
   border: 1px solid var(--slate);
 }
 
+/* The AI keeper: a model on NEAR AI Cloud decides; drawn as a ring so it reads as different from the scripted keepers. */
+.keeper--oracle .keeper-glyph {
+  background: transparent;
+  border: 2px solid #7cc4e8;
+}
+
+.keeper--oracle .keeper-strat {
+  color: #7cc4e8;
+}
+
 .keeper.is-in .keeper-glyph {
   background: var(--ember);
   box-shadow: 0 0 12px var(--ember);

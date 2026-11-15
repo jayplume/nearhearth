@@ -22,3 +22,20 @@ export function ago(ms: number): string {
   if (s < 3600) return `${Math.round(s / 60)} min ago`;
   return `${Math.round(s / 3600)} h ago`;
 }
+
+/**
+ * When the keeper swarm next plays. The GitHub Action runs at minute 17 of
+ * hours 0, 8 and 16 UTC (.github/workflows/swarm.yml); GitHub may start it a
+ * few minutes late, so the page says "around".
+ */
+export const SWARM_HOURS_UTC = [0, 8, 16];
+export function nextSwarmSession(now: number): Date {
+  const d = new Date(now);
+  for (let day = 0; day < 2; day++) {
+    for (const h of SWARM_HOURS_UTC) {
+      const t = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + day, h, 17);
+      if (t > now) return new Date(t);
+    }
+  }
+  return new Date(now + 8 * 3_600_000);
+}

@@ -25,7 +25,7 @@ const TITLES: Record<string, string> = {
 
 const DESCRIPTIONS: Record<string, string> = {
   "/": "EMBER is a memecoin with a fire. Holders and a swarm of keeper agents pledge every round on NEAR; reach the line together and it roars, fall short and it burns the treasury.",
-  "/swarm": "Twelve keeper agents on their own NEAR sub-accounts, their live reasoning, and a 60-round simulation of four communities.",
+  "/swarm": "Thirteen keeper agents on their own NEAR sub-accounts (one decides with a model on NEAR AI Cloud), their live reasoning, and a 60-round simulation of four communities.",
   "/council": "The Hearth Council, a Sputnik DAO holding 30% of EMBER, pays and seats keepers by warmth: EMBER they burned in rounds that roared.",
   "/for-near": "What a hearth brings NEAR: recurring accounts, gas burned, storage locked, a job for DAOs and agents, and how the project pays for itself.",
   "/rules": "The launch parameters of the NEAR Hearth contract, read live from the chain, and how a round works.",

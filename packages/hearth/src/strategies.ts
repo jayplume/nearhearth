@@ -22,7 +22,7 @@ export interface Decision {
   reason: string;
 }
 
-export type StrategyId = "steady" | "closer" | "skeptic" | "guardian" | "overeager" | "freerider" | "matcher";
+export type StrategyId = "steady" | "closer" | "skeptic" | "guardian" | "overeager" | "freerider" | "matcher" | "oracle";
 
 export interface Strategy {
   id: StrategyId;
@@ -120,6 +120,17 @@ export const STRATEGIES: Record<StrategyId, Strategy> = {
       if (v.balance < log) return none(`Would match ${fmt(log)} EMBER but holds ${fmt(v.balance)}.`);
       return { pledge: log, reason: `Matches the ${fmt(v.pledged)} EMBER already pledged, up to 15% of the line.` };
     },
+  },
+  oracle: {
+    id: "oracle",
+    name: "AI",
+    summary: "Asks a model on NEAR AI Cloud what to pledge, held to a closer's 25% cap (src/ai.ts).",
+    wakesAt: 0.7,
+    // The model runs only in the swarm runner, which holds the key; the page shows the rule it is held to.
+    decide: (v) =>
+      v.mine > 0n
+        ? none("Already pledged this round, on a model's advice.")
+        : none(`When the swarm plays, it asks a model on NEAR AI Cloud and pledges up to ${fmt((v.line * 2_500n) / BPS)} EMBER (25% of the line).`),
   },
   freerider: {
     id: "freerider",

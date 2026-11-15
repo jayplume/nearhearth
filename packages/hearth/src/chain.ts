@@ -131,7 +131,7 @@ export async function view<T>(contract: string, method: string, args: Record<str
 export const hearth = <T>(method: string, args: Record<string, unknown> = {}) => view<T>(HEARTH_CONTRACT, method, args);
 
 /** The 12 keeper agents of the testnet swarm and the strategy each one runs. */
-export const KEEPERS: { id: string; strategy: "steady" | "skeptic" | "closer" | "guardian" | "freerider" }[] = [
+export const KEEPERS: { id: string; strategy: "steady" | "skeptic" | "closer" | "guardian" | "freerider" | "oracle" }[] = [
   ...[1, 2, 3, 4, 5].map((n) => ({ id: `keeper-0${n}.${PARENT}`, strategy: "steady" as const })),
   { id: `keeper-06.${PARENT}`, strategy: "skeptic" },
   { id: `keeper-07.${PARENT}`, strategy: "skeptic" },
@@ -140,6 +140,8 @@ export const KEEPERS: { id: string; strategy: "steady" | "skeptic" | "closer" | 
   { id: `keeper-10.${PARENT}`, strategy: "closer" },
   { id: `keeper-11.${PARENT}`, strategy: "guardian" },
   { id: `keeper-12.${PARENT}`, strategy: "freerider" },
+  // The AI keeper: decides with a model on NEAR AI Cloud (src/ai.ts, scripts/lib/ai-keeper.ts).
+  { id: `keeper-13.${PARENT}`, strategy: "oracle" },
 ];
 
 /** Every closed round with pledges, newest first, paging through list_rounds 100 at a time. */

@@ -23,6 +23,7 @@ import {
   hearth,
   txUrl,
 } from "@nearhearth/hearth";
+import { aiKeeperDecide } from "./lib/ai-keeper.js";
 import { flag, opt } from "./lib/args.js";
 import { call } from "./lib/signer.js";
 
@@ -87,7 +88,7 @@ async function playRound() {
       hearth<string>("ft_balance_of", { account_id: k.id }),
       hearth<string>("get_pledge", { round, account_id: k.id }),
     ]);
-    const d = STRATEGIES[k.strategy].decide({
+    const v = {
       round,
       line: BigInt(s.line),
       pledged: BigInt(s.pledged),
@@ -95,12 +96,16 @@ async function playRound() {
       streak: s.streak,
       balance: BigInt(bal),
       mine: BigInt(mine),
-    });
+    };
+    // The AI keeper asks a model on NEAR AI Cloud; every other keeper runs its strategy from strategies.ts.
+    const ai = k.strategy === "oracle" ? await aiKeeperDecide(v, s.pledgers, (await hearth<ChainRound[]>("list_rounds", { limit: 5 })).map((r) => ({ round: r.round, outcome: r.outcome, pledged: r.pledged, line: r.line }))) : null;
+    const d = ai ?? STRATEGIES[k.strategy].decide(v);
+    const extra = ai ? { model: ai.model, asked: ai.asked, ...(ai.capped ? { capped: "the model asked for more than the 25% cap" } : {}) } : {};
     if (d.pledge > 0n) {
       const c = await call(k.id, HEARTH_CONTRACT, "pledge", { amount: d.pledge.toString() }, ONE_YOCTO);
-      log({ round, keeper: k.id, strategy: k.strategy, event: "pledge", amount: fmt(d.pledge), reason: d.reason, ok: c.ok ? "ok" : c.failure, tx: txUrl(c.hash) });
+      log({ round, keeper: k.id, strategy: k.strategy, event: "pledge", amount: fmt(d.pledge), reason: d.reason, ...extra, ok: c.ok ? "ok" : c.failure, tx: txUrl(c.hash) });
     } else {
-      log({ round, keeper: k.id, strategy: k.strategy, event: "pass", reason: d.reason });
+      log({ round, keeper: k.id, strategy: k.strategy, event: "pass", reason: d.reason, ...extra });
     }
   }
 

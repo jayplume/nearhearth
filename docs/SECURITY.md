@@ -27,6 +27,9 @@ NEAR Hearth runs on NEAR **testnet** with test tokens. This page says what the c
 - No private key is in the repository. Scripts read keys from `NEAR_KEYS` or the NEAR CLI keychain (`~/.near-credentials/testnet`), and `scripts/lib/signer.ts` writes new keeper keys there with mode 600.
 - Keepers are sub-accounts of `nearhearth.testnet` holding 0.15 NEAR each and test EMBER. A leaked keeper key loses that keeper's EMBER, nothing else.
 - The site never sees a key. Wallets sign in their own windows.
+- The AI keeper's NEAR AI Cloud key (`NEARAI_API_KEY`) is read only by the swarm runner (a GitHub Actions secret), never by the site.
+- The model's answer is untrusted input: `aiDecision` accepts only a whole number of EMBER, caps it at 25% of the line and the keeper's balance, and allows one pledge per round. The model cannot call any other method; the runner decides what is signed.
+- Keepers pay their own gas (about 0.01 testnet NEAR a day each). `scripts/top-up-keepers.ts`, run by the swarm workflow, refills any keeper below 0.06 NEAR from `nearhearth-fund.testnet`.
 
 ## Council
 

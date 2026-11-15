@@ -4,7 +4,7 @@
 
 <p align="center">
   <b>EMBER is a memecoin with a fire. Reach the line together and it roars. Fall short and it burns the treasury.</b><br />
-  One NEP-141 contract on NEAR testnet, a swarm of keeper agents, and a Sputnik DAO that pays by reputation.
+  One NEP-141 contract on NEAR testnet, a swarm of keeper agents (one of them a model on NEAR AI Cloud), and a Sputnik DAO that pays by reputation.
 </p>
 
 <p align="center">
@@ -56,12 +56,12 @@ Everything is in one contract with **no owner and no admin method**: the paramet
 |---|---|
 | Open **https://nearhearth.vercel.app** | The live round: EMBER pledged against the line, the clock, the streak, and a fire that burns brighter as pledges approach the line. Move the cursor through it to fan the embers. |
 | Wait, or scroll to **Every round, on chain** | Rounds closing on NEAR testnet with their outcome, burns and sparks, read from `list_rounds` (each closed in a linked block). |
-| Open **Keepers** | Twelve agents, each a sub-account of `nearhearth.testnet` with its own key and strategy. Each row shows what it pledged this round and the sentence its strategy would give if it woke now. |
+| Open **Keepers** | Thirteen agents, each a sub-account of `nearhearth.testnet` with its own key. Twelve run a scripted strategy and each row shows the sentence it would give if it woke now; `keeper-13` (the ring) asks a model on NEAR AI Cloud what to pledge, within a closer's cap. |
 | On **Keepers**, use the simulation tabs | 60 simulated rounds for four communities: a coordinated swarm roars 59 of 60 rounds; take the closers away and it goes out 45 times. |
 | Open **Council** | The Sputnik DAO that holds 30% of EMBER, its proposals and the warmth leaderboard it pays by. Proposal #0 funded the keepers; #1–#3 seated the three warmest keepers on the council; #4 paid a warmth grant. All five were approved and executed on chain. |
 | Open **For NEAR** | What a hearth brings NEAR (recurring accounts, gas, locked storage, a use for DAOs and agents), live figures from the contract, and how the project pays for itself. |
 | Connect a testnet wallet on the home page, press **Take your 100 EMBER**, then **Pledge** | A drip from the treasury, then your pledge in the current round; a toast links the transaction on NearBlocks and the fire sparks. After the round closes, **Collect** claims your sparks or refund. |
-| `pnpm install && pnpm test` | 30 TypeScript tests pass: 20 for the engine (including the one that writes the shared vector) and 10 for the site, among them React Testing Library tests of the keeper roster, the council and the rules page. |
+| `pnpm install && pnpm test` | 39 TypeScript tests pass: 28 for the engine (including the one that writes the shared vector and the AI keeper's limits) and 11 for the site, among them React Testing Library tests of the keeper roster, the council and the rules page. |
 | `cd contract && cargo test` | 18 contract tests pass, including `agrees_with_the_typescript_rules_engine`, which replays that vector against the contract to the last unit. |
 | `pnpm simulate` | Regenerates `SIMULATION.md` and `data/simulation.json` byte for byte (CI checks this). |
 | `pnpm status` | The live state of the fire, read from NEAR. |
@@ -158,7 +158,7 @@ NEAR's daily active accounts fell from 2.02 million a day in July 2024 to about 
 - **Locked storage.** Every holder registration (0.0125 NEAR) and every closed round's record keeps NEAR locked for the life of the hearth.
 - **Something real for DAOs and agents to do.** A stock Sputnik DAO that pays by a reputation it cannot fake, and agents on NEAR accounts competing in a live economy.
 
-The [For NEAR page](https://nearhearth.vercel.app/for-near) shows the live figures: on testnet so far, 21+ closed rounds, 148+ pledges and 31,000+ EMBER burned.
+The [For NEAR page](https://nearhearth.vercel.app/for-near) shows the live figures. On 15 Nov 2026 they read 29 rounds closed with pledges, 198 pledges and 54,184 EMBER burned, with a best streak of 12.
 
 ## Business model and sustainability
 
@@ -169,7 +169,7 @@ The [For NEAR page](https://nearhearth.vercel.app/for-near) shows the live figur
 | Hosted keepers | Communities that want their fire tended around the clock, paid in their token through their council | Planned |
 | Pledging from any chain | Players buying EMBER through NEAR Intents; each purchase pays NEAR's Intents fee | Planned |
 
-Running costs today: a static site, public RPCs, testnet gas, and a GitHub Action that plays two swarm rounds every 8 hours.
+Running costs today: a static site, public RPCs, testnet gas (each keeper spends about 0.01 testnet NEAR a day), NEAR AI Cloud calls for the AI keeper, and a GitHub Action that plays two swarm rounds every 8 hours and tops up the contract's storage and the keepers' gas from `nearhearth-fund.testnet`.
 
 ## The keepers
 
@@ -180,8 +180,9 @@ Running costs today: a static site, public RPCs, testnet gas, and a GitHub Actio
 | keeper-08, 09, 10 | Closer | Wakes in the last 15% of the round and fills the gap, up to 25% of the line each, so three closers can land a gap of 75%. Never over-pledges. |
 | keeper-11 | Guardian | When the streak is 3 or more and the fire is about to go out, throws up to 30% of the line at the last moment. |
 | keeper-12 | Free rider | Never pledges. Gets no sparks and no warmth: the control group. |
+| keeper-13 | AI | At 70% of the round, asks `deepseek-ai/DeepSeek-V4.1-Flash-1017` on [NEAR AI Cloud](https://docs.near.ai/cloud/quickstart) (a model in a TEE) what to pledge, given the rules and the public state. Its answer is held to a closer's cap: a whole number of EMBER, at most 25% of the line and what it holds, once per round (`packages/hearth/src/ai.ts`). Funded by council proposal #5. |
 
-No keeper has any power a human holder lacks. They read the same public state and call the same two methods. The coordination emerges from timing: each closer re-reads the round before acting, so the second closer sees what the first one filled.
+No keeper has any power a human holder lacks. They read the same public state and call the same two methods. The coordination emerges from timing: each closer re-reads the round before acting, so the second closer sees what the first one filled. The AI keeper is the experiment: a model that can misjudge the round, playing by the same caps as everyone else, so a bad call costs it EMBER, not the game.
 
 ## Warmth and the council
 
@@ -211,6 +212,7 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 | Council by warmth | Proposals #1–#3 added keeper-09, keeper-10 and keeper-08 (6,150, 5,300 and 4,000 warmth) to the council; #4 paid 5% of warmth to the five warmest keepers. Each was filed by `pnpm council warmth`, approved by the council and executed (see the Council page). |
 | Storage | The contract pays for its own storage. We found it would run out in about a day of 10-minute rounds, topped it up ([3mdameR4…](https://testnet.nearblocks.io/txns/3mdameR46YnvGzEr2RLFfFUwHiKGPMXfDCfQo4RgXtw5)), made closing free each round's running total, and upgraded without re-init ([7F3cHCUs…](https://testnet.nearblocks.io/txns/7F3cHCUsoipnZqJkSAkGsGmE4g9PiMZ5TBpr8URx3FWy)). `scripts/top-up.ts` keeps it funded. |
 | Keepers | 12 sub-accounts of `nearhearth.testnet`, each with its own key. Round 1 roared with the swarm alone: the steady keepers' first pledge was [CV2aYxmc…](https://testnet.nearblocks.io/txns/CV2aYxmc52QNc16a2fv6dECV3fqtQyNKmmuiMyRTKuKh), and closer keeper-09 claimed 375 EMBER of sparks in [2YWG5nCa…](https://testnet.nearblocks.io/txns/2YWG5nCaGaZLgVdkYoGaPb4pf3y3VkZ5aBEeHq6bC1iJ). |
+| The AI keeper | Created and given its 100 EMBER drip on 15 Nov 2026, then funded by council proposal #5 (1,500 EMBER, filed in [5iqSfRRi…](https://testnet.nearblocks.io/txns/5iqSfRRiQvsz7sSSiWdXvWDH2obovYw8dGADUmhS4zoV), approved in [87oM2Nbz…](https://testnet.nearblocks.io/txns/87oM2NbzpYYTs1G1PuczasKXd549RyKSRkMFfcLggrPB) and [C4idCPgh…](https://testnet.nearblocks.io/txns/C4idCPghv9nNNpbpHZ3zZepm57tzCY6cUCFMWPhzh7oS)). In round 168 it woke at 70% with 500 of 1,000 pledged and the model said: *"Pledging 250 leaves a 250 gap that one closer can fill, securing a 25% share of the 1500 mint and a net gain of 125 EMBER."* It pledged 250 ([EAUQqm81…](https://testnet.nearblocks.io/txns/EAUQqm81GKHPYaSY8j1DQdAHdAqijyjkVyftttLAMuq4)); closer keeper-10 filled the last 250 ([6MVt85oJ…](https://testnet.nearblocks.io/txns/6MVt85oJLsRQtQLaKjN8fjGoA6gvCKruy5MiUgjp3MjT)) and the round landed exactly on the line. |
 | A real wallet | `itup.testnet` (Meteor) played round 20 alongside the swarm: took its drip ([3kJwGxHC…](https://testnet.nearblocks.io/txns/3kJwGxHCNGG6PmEGKAr7DGTBwPneqJsW3xCgZfXg4ESM)), pledged 50 EMBER ([6rbiYRjT…](https://testnet.nearblocks.io/txns/6rbiYRjTckefi1TpkqQefKXtgb576YHaZomK8RUgpr6o)); the closers landed the line at exactly 1,100, the fire roared, and `claim_all` minted it 75 EMBER of sparks ([FvKuMVGN…](https://testnet.nearblocks.io/txns/FvKuMVGN3bftJum9s9kE9bysaGnZTG7ZATgfF2kQDnFL)), shown on NearBlocks as *Mint 75 Ember (EMBER) for itup.testnet*. |
 | Site | https://nearhearth.vercel.app, fully static; every number on it is read from the chain in your browser. |
 | Mainnet | Not deployed. Test tokens only. |
@@ -225,14 +227,14 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 
 ## Demo video
 
-2:04, with subtitles: the problem, the mechanic, the keeper swarm, the simulation, a real Meteor wallet pledging and collecting sparks, the transactions on NearBlocks, the council seating agents by warmth, and what a hearth is worth to NEAR. Link added when published.
+[**Watch the demo**](https://github.com/jayplume/nearhearth/releases/download/v0.4.0/nearhearth-demo.mp4) (2:04, English subtitles in [`nearhearth-demo.en.srt`](https://github.com/jayplume/nearhearth/releases/download/v0.4.0/nearhearth-demo.en.srt)): the problem, the mechanic, the keeper swarm, the simulation, a real Meteor wallet pledging and collecting sparks, the transactions on NearBlocks, the council seating agents by warmth, and what a hearth is worth to NEAR. Recorded on 14 Nov 2026, before the AI keeper joined.
 
 ## NEAR tracks it fits
 
 | Track | Why |
 |---|---|
 | Memecoins With Mechanics | The mechanic is the token: supply reacts to the community each round; treasury with rules; an on-chain ritual and a high score. Parameters fixed at launch, no admin key, NEP-141, simulated over 60 rounds before launch, sybil limits stated (RULES.md). |
-| AI Swarms | A coordination market among agents on sub-accounts of one parent, with conditional pledges settled by the contract (pledge only pays if the group lands the line). Simulation mode runs without any LLM; the live page shows rounds, pledges and who got what. |
+| AI Swarms | A coordination market among agents on sub-accounts of one parent, with conditional pledges settled by the contract (pledge only pays if the group lands the line). One live agent decides with a model on NEAR AI Cloud. Simulation mode runs without any LLM; the live page shows rounds, pledges and who got what. |
 | Social Money | Collective ownership and programmable rewards on top of an existing Sputnik DAO: the council holds 30% of supply and pays by warmth, a reputation every point of which traces to a finished round. No new multisig. |
 | Games With Real Economies | The economy is the gameplay: keep the fire lit, with NPC keepers that hold wallets and inventories, act on readable rules, and change the economy round by round without a dev patch. |
 | Open Innovation | An assurance-game memecoin: a token whose supply is a record of how well its community coordinated. |
@@ -243,7 +245,7 @@ The first run had steady keepers at 8% and closers that would only fill a gap un
 
 **Why would I pledge if I can lose half?** Because if the round roars you get back your share of 150% of the line. Pledging alone loses; pledging together pays. That tension is the game.
 
-**Do the agents have an advantage?** They see exactly what you see and call the same two methods. Their only edge is that they never forget to show up.
+**Do the agents have an advantage?** They see exactly what you see and call the same two methods. Their only edge is that they never forget to show up. The AI keeper is held to the same cap as a closer.
 
 **Can I farm it with many accounts?** Sparks are pro rata, so splitting earns nothing. Each account can take the 100 EMBER drip once, capped at 100,000 in total.
 
@@ -257,9 +259,9 @@ More words explained in [docs/GLOSSARY.md](docs/GLOSSARY.md).
 
 ```
 contract/            The hearth: EMBER + game, Rust, near-sdk 5.29. 18 unit tests, clippy-clean.
-packages/hearth/     Rules engine, keeper strategies, simulation, chain helpers. 20 tests.
-apps/web/            The site (React 19, Vite 7, wallet-selector 10). 10 tests incl. React Testing Library.
-scripts/             swarm, council, simulate, status, health, setup-keepers, deploy, top-up.
+packages/hearth/     Rules engine, keeper strategies, the AI keeper's limits, simulation, chain helpers. 28 tests.
+apps/web/            The site (React 19, Vite 7, wallet-selector 10). 11 tests incl. React Testing Library.
+scripts/             swarm (with the AI keeper), council, simulate, status, health, setup-keepers, deploy, top-up, top-up-keepers.
 .github/workflows/   ci.yml (lint, types, tests, simulation reproducible, build, contract tests); swarm.yml (two rounds every 8 hours).
 data/                simulation.json and the swarm's log of every decision.
 RULES.md             The rules, written before the contract.
@@ -274,7 +276,7 @@ Node 22+, pnpm 10, Rust (for the contract).
 
 ```bash
 pnpm install
-pnpm check                   # lint, types (packages and scripts), 30 tests, simulation
+pnpm check                   # lint, types (packages and scripts), 39 tests, simulation
 pnpm test                    # rules engine, strategies, simulation, shared vector, site components
 pnpm simulate                # 60 rounds × 4 communities → SIMULATION.md
 pnpm status                  # the fire, read from NEAR testnet
@@ -286,6 +288,9 @@ pnpm council list            # the council's proposals
 pnpm council warmth          # propose the warmest keepers into the council and a warmth grant (--dry-run to preview)
 pnpm dev                     # the site on http://localhost:5175
 pnpm tsx scripts/top-up.ts   # top up the contract's storage if its free balance is low
+pnpm top-up:keepers --dry-run  # which keepers are low on gas (without --dry-run, refills them)
+pnpm council grant --to <account> --amount <EMBER> --why "<reason>"   # one grant, as a DAO proposal
+NEARAI_API_KEY=… pnpm swarm --rounds 1   # play a round with the AI keeper deciding through NEAR AI Cloud
 cd contract && cargo test    # 18 contract tests
 ```
 
@@ -295,7 +300,7 @@ No owner and no admin method in the contract; escrow tracked apart from the trea
 
 ## Built with
 
-near-sdk-rs 5.29 and near-contract-standards, near-api-js, @near-wallet-selector 10, Sputnik DAO v2 (the official testnet factory), React, Vite, Vitest, Biome. Data on the problem: DefiLlama. AI assistance: written with Claude.
+near-sdk-rs 5.29 and near-contract-standards, near-api-js, @near-wallet-selector 10, Sputnik DAO v2 (the official testnet factory), NEAR AI Cloud (the AI keeper's model), React, Vite, Vitest, Biome. Data on the problem: DefiLlama. AI assistance: written with Claude.
 
 ## License
 

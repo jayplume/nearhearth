@@ -9,7 +9,7 @@ Everything here runs against NEAR **testnet** with test tokens. No step needs a 
 | Open https://nearhearth.vercel.app | Round number, time left, EMBER pledged against the line, the streak. The fire's size follows pledged ÷ line. |
 | Move the cursor through the fire | Embers swerve away from the cursor and sparks fly where it moves. With "reduce motion" set in your OS, the fire is a still glow instead. |
 | Keep the tab open across a round boundary (10 minutes) | A toast: "Round N roared…" (and a burst of sparks) or "Round N went out…". The ledger gains a row. |
-| Open **Keepers** | 12 keepers. Each row: EMBER balance, warmth, what it pledged this round, and the reason its strategy gives right now. The reasons change as the round fills. |
+| Open **Keepers** | 13 keepers (keeper-13 is the AI keeper, drawn as a ring). Each row: EMBER balance, warmth, what it pledged this round, and the reason its strategy gives right now. The reasons change as the round fills. |
 | On **Keepers**, switch the simulation tabs and move across the chart | Supply over 60 rounds for each community, an outcome strip (orange = roared, slate = out), and a readout for any round. |
 | Open **Council** | Council balance and members, the DAO's proposals with their status, and the warmth leaderboard. |
 | Open **Rules** | The launch parameters, read live from `get_params`. |
@@ -34,7 +34,7 @@ You need a NEAR testnet account (Meteor, Intear, HERE or Sender; a new one can b
 ```bash
 git clone https://github.com/jayplume/nearhearth && cd nearhearth
 pnpm install
-pnpm test          # 30 tests (20 engine + 10 site): the line, roar/out/cold, claims never exceed the pool, sybil split, strategies, simulation determinism, shared vector
+pnpm test          # 39 tests (28 engine + 11 site): the line, roar/out/cold, claims never exceed the pool, sybil split, strategies, the AI keeper's limits, simulation determinism, shared vector
 pnpm simulate      # regenerates SIMULATION.md byte for byte
 pnpm status        # the fire, read from NEAR
 cd contract && cargo test   # 18 tests, including agrees_with_the_typescript_rules_engine

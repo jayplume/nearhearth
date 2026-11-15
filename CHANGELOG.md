@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 · 15 Nov 2026
+
+- **An AI keeper.** `keeper-13` asks a model on NEAR AI Cloud (`deepseek-ai/DeepSeek-V4.1-Flash-1017`, in a TEE) what to pledge, from the rules and the public state only, and is held to a closer's cap: a whole number of EMBER, at most 25% of the line and its balance, once per round (`packages/hearth/src/ai.ts`, `scripts/lib/ai-keeper.ts`). Funded by council proposal #5. Its first decision, in round 168, set up a roar landed exactly on the line. 8 new engine tests (28).
+- **The swarm keeps itself running.** `scripts/top-up-keepers.ts`, run by the swarm workflow, refills any keeper below 0.06 testnet NEAR from `nearhearth-fund.testnet` (keepers spend about 0.01 NEAR a day; without it the swarm would have gone quiet within two weeks). The fund was topped up by 2.5 testnet NEAR.
+- `pnpm council grant`: one grant as a normal DAO proposal.
+- The home page says when the keepers next play (`nextSwarmSession`, tested).
+- Dependabot: major versions are upgraded by hand, minor and patch bumps are grouped; four major-bump PRs closed with the reason.
+- README: the demo video is published (release v0.4.0), current figures from the For NEAR page, 39 TypeScript tests.
+
 ## 0.3.0 · 14 Nov 2026
 
 Moved to github.com/jayplume/nearhearth, public. About seventy focused changes:

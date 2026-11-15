@@ -16,7 +16,8 @@ We checked NEAR Hearth against each track prompt it fits (from `nearai/near-hack
 
 | Prompt asks | Status | Where |
 |---|---|---|
-| Each agent on its own sub-account under one parent | ✅ | `keeper-01 … 12.nearhearth.testnet`, own keys |
+| Each agent on its own sub-account under one parent | ✅ | `keeper-01 … 13.nearhearth.testnet`, own keys |
+| Agents that reason, not only scripts | ✅ | `keeper-13` asks a model on NEAR AI Cloud each round and pledges within a closer's cap (`packages/hearth/src/ai.ts`, `scripts/lib/ai-keeper.ts`); its starter stack came from council proposal #5 |
 | A coordinator contract that opens a round, collects bids and settles | ✅ | The hearth contract: rounds, conditional pledges, settlement at close |
 | Rules written down before code | ✅ | RULES.md (first commit) |
 | Simulation mode with many agents and scripted strategies, no LLM | ✅ | `packages/hearth/src/sim.ts`, 12–16 agents per scenario |

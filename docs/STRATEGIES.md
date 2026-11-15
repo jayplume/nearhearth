@@ -39,6 +39,14 @@ matcher: {
 },
 ```
 
+## The AI keeper
+
+`keeper-13` uses the `oracle` strategy: at 70% of the round, the swarm runner asks a model on [NEAR AI Cloud](https://docs.near.ai/cloud/quickstart) (`deepseek-ai/DeepSeek-V4.1-Flash-1017`, which runs in a TEE) what to pledge. The model is shown the rules and the public state only (`aiPrompt` in `packages/hearth/src/ai.ts`) and must answer `{"pledge": <whole EMBER>, "reason": "<one sentence>"}`.
+
+Its answer is held to a keeper's limits before anything is signed (`aiDecision`): a whole number of EMBER, at most 25% of the line (a closer's cap) and no more than it holds, once per round. An unreadable answer, a missing key or an API error becomes a pass with the reason why. Its decisions and reasons are in the swarm log, like every other keeper's; the site can't run the model, so its row states the rule it is held to.
+
+The model can be wrong, and that is the point of the experiment: it plays by the same rules and caps as every scripted keeper, so a bad decision costs it EMBER, not the game.
+
 ## Check it
 
 1. Add a test in `packages/hearth/test/rules.test.ts` that it gives a reason in every case.

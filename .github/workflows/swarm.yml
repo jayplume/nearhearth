@@ -46,9 +46,16 @@ jobs:
         if: env.HAS_KEY == 'true'
         env:
           NEAR_KEYS: ${{ secrets.NEAR_KEYS }}
+          # The AI keeper (keeper-13) asks a model on NEAR AI Cloud; without the key it passes and says why.
+          NEARAI_API_KEY: ${{ secrets.NEARAI_API_KEY }}
         run: pnpm swarm --rounds "${{ github.event.inputs.rounds || '2' }}"
       - name: Top up storage
         if: env.HAS_KEY == 'true'
         env:
           NEAR_KEYS: ${{ secrets.NEAR_KEYS }}
         run: pnpm tsx scripts/top-up.ts --min 1 --amount 1
+      - name: Top up keepers' gas
+        if: env.HAS_KEY == 'true'
+        env:
+          NEAR_KEYS: ${{ secrets.NEAR_KEYS }}
+        run: pnpm tsx scripts/top-up-keepers.ts --min 0.06 --to 0.15

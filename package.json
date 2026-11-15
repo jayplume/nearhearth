@@ -21,6 +21,7 @@
     "dev": "pnpm --filter web dev",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm simulate",
     "top-up": "tsx scripts/top-up.ts",
+    "top-up:keepers": "tsx scripts/top-up-keepers.ts",
     "health": "tsx scripts/health.ts"
   },
   "pnpm": {

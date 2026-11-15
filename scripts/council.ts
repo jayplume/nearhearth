@@ -3,6 +3,7 @@
  * DAO proposal that the council votes on; this script only files and votes.
  *
  *   pnpm council grant-keepers         # fund the keeper swarm from the council (one proposal, many transfers)
+ *   pnpm council grant --to <account> --amount <EMBER> --why "<reason>"   # one grant, as a normal proposal
  *   pnpm council warmth [--min 2000]   # propose the warmest keepers into the council's "keepers" role and a warmth grant
  *   pnpm council list                  # the DAO's latest proposals
  *   add --dry-run to print the proposals without sending anything
@@ -71,6 +72,14 @@ if (cmd === "grant-keepers") {
   const pays = KEEPERS.filter((k) => k.strategy !== "freerider").map((k) => ({ to: k.id, amount: each, memo: "council grant: keeper starter stack" }));
   const kind = transfers(pays);
   const id = await propose(`Fund the keeper swarm: ${fmt(each)} EMBER to each of ${pays.length} working keepers (the free rider gets nothing).`, kind);
+  await approve(id, kind);
+} else if (cmd === "grant") {
+  const to = opt("to");
+  const amount = opt("amount");
+  const why = opt("why") ?? "council grant";
+  if (!to || !amount || !/^\d+$/.test(amount)) throw new Error('usage: pnpm council grant --to <account> --amount <whole EMBER> --why "<reason>"');
+  const kind = transfers([{ to, amount: BigInt(amount) * ONE, memo: why.slice(0, 120) }]);
+  const id = await propose(`Grant ${fmt(BigInt(amount) * ONE)} EMBER to ${to}: ${why}`, kind);
   await approve(id, kind);
 } else if (cmd === "warmth") {
   const min = BigInt(opt("min") ?? "2000") * ONE;
